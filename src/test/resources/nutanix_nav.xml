@@ -1,0 +1,89 @@
+<!DOCTYPE suite SYSTEM "https://testng.org/testng-1.0.dtd">
+<!--suite name="iOS AA Diary Test" parallel="tests" thread-count="4"-->
+<!--suite name="Nutanix Navigation" parallel="tests" thread-count="2"-->
+    <suite name="Nutanix Navigation" >
+    <listeners>
+        <listener class-name="utils.ListenerTest"></listener>
+    </listeners>
+    <parameter name="reporting.notification.emails" value="vodchyts.alex@gmail.com"/>
+
+    <parameter name="jenkinsJobType" value="web"/>
+    <parameter name="jenkinsJobName" value="Nutanix-Nav"/>
+    <parameter name="jenkinsEmail" value="vodchyts.alex@gmail.com"/>
+    <parameter name="jenkinsEnvironments" value="PROD,TEST_ENV"/>
+
+    <test name="API links checking">
+        <classes>
+            <class name="MainTest">
+                <methods>
+                    <include name="allLinksCheckTests"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+
+<!--    <test name="Check languages links">-->
+<!--        <classes>-->
+<!--            <class name="MainTest">-->
+<!--                <methods>-->
+<!--                    <include name="languagesLinksTest"/>-->
+<!--                </methods>-->
+<!--            </class>-->
+<!--        </classes>-->
+<!--    </test>-->
+
+<!--    <test name="Check navigation header utility links for default language">-->
+<!--        <classes>-->
+<!--            <class name="MainTest">-->
+<!--                <methods>-->
+<!--                    <include name="navigationHeaderUtilityLinksDefaultLanguageTest"/>-->
+<!--                </methods>-->
+<!--            </class>-->
+<!--        </classes>-->
+<!--    </test>-->
+<!--    <test name="Check navigation main menu links for default language">-->
+<!--        <classes>-->
+<!--            <class name="MainTest">-->
+<!--                <methods>-->
+<!--                    <include name="navigationMaimMenuLinksDefaultLanguageTest"/>-->
+<!--                </methods>-->
+<!--            </class>-->
+<!--        </classes>-->
+<!--    </test>-->
+<!--    <test name="Check navigation main menu sub links for default language">-->
+<!--        <classes>-->
+<!--            <class name="MainTest">-->
+<!--                <methods>-->
+<!--                    <include name="navigationMaimMenuSubLinksDefaultLanguageTest"/>-->
+<!--                </methods>-->
+<!--            </class>-->
+<!--        </classes>-->
+<!--    </test>-->
+<!--    <test name="Check navigation header utility links with selected languages">-->
+<!--        <classes>-->
+<!--            <class name="MainTest">-->
+<!--                <methods>-->
+<!--                    <include name="navigationHeaderUtilityLinksSpecLanguageTest"/>-->
+<!--                </methods>-->
+<!--            </class>-->
+<!--        </classes>-->
+<!--    </test>-->
+<!--    <test name="Check main navigation links with selected languages">-->
+<!--        <classes>-->
+<!--            <class name="MainTest">-->
+<!--                <methods>-->
+<!--                    <include name="navigationMainLinksSpecLanguageTest"/>-->
+<!--                </methods>-->
+<!--            </class>-->
+<!--        </classes>-->
+<!--    </test>-->
+<!--    <test name="Check sub main navigation links with selected languages">-->
+<!--        <classes>-->
+<!--            <class name="MainTest">-->
+<!--                <methods>-->
+<!--                    <include name="navigationMainSubLinksSpecLanguageTest"/>-->
+<!--                </methods>-->
+<!--            </class>-->
+<!--        </classes>-->
+<!--    </test>-->
+</suite>

@@ -1,0 +1,11 @@
+/reports
+/.metadata/
+/target
+/.classpath
+/.project
+.settings
+.idea
+/test-output
+*.log
+local.properties
+*.iml
