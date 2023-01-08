@@ -18,7 +18,6 @@ public class NavigationMainPage extends BasePage{
 
     public NavigationMainPage(WebDriver driver){
         super(driver);
-        PageFactory.initElements(driver,this);
     }
 
     public List<String> getMainNavigationLinks() {

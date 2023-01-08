@@ -26,7 +26,6 @@ public class NavigationHeaderUtilityPage extends BasePage{
 
     public NavigationHeaderUtilityPage(WebDriver driver) {
         super(driver);
-        PageFactory.initElements(driver, this);
     }
 
     public List<String> getUtilityLinks(){
