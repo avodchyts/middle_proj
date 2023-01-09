@@ -10,6 +10,8 @@ import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Listeners;
 import utils.DriverAdjust;
+import utils.DriverFactory;
+import utils.DriverHook;
 import utils.ListenerTest;
 
 import java.time.Duration;
@@ -31,13 +33,15 @@ public class BaseTest {
 
     @BeforeMethod(alwaysRun = true)
     public WebDriver setDriver() {
-        driver = DriverAdjust.getDriver();
+        driver = DriverFactory.getDriver();
+        driver.manage().window().maximize();
         return driver;
 
     }
-
     @AfterMethod(alwaysRun = true)
     public void quitDriver() {
-        DriverAdjust.closeDriver();
+        DriverFactory.closeDriver();
+        Runtime current = Runtime.getRuntime();
+        current.addShutdownHook(new DriverHook());
     }
 }
