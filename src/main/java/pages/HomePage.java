@@ -15,14 +15,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import static java.text.MessageFormat.format;
+
 public class HomePage extends BasePage {
     private static final Logger LOGGER = Logger.getLogger(HomePage.class);
-    final static String PAGE_URL = EnvironmentsValues.getUrlValue();
-    final static String langOption = "//li/a[text()='%s']";
-
-    @FindBy(xpath = "//a['href']")
-    private WebElement firstLink;
-
+    private final static String PAGE_URL = EnvironmentsValues.getUrlValue();
+    private final static String LANG_OPTION = "//li/a[text()='%s']";
     @FindBy(xpath = "//button[@id='toggle-language']")
     private WebElement languageButton;
 
@@ -42,28 +40,20 @@ public class HomePage extends BasePage {
     }
 
     public List<String> getLinks() {
-        List<String> links = new ArrayList<>();
-        links = linksList.stream().filter(x->x.getAttribute("href")!=null).map(o -> o.getAttribute("href")).collect(Collectors.toList());
-        return links;
+        return linksList.stream().filter(x -> x.getAttribute("href") != null).map(o -> o.getAttribute("href")).collect(Collectors.toList());
     }
 
     public String getLanguageText() {
-        WebDriverWait webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(3));
-        webDriverWait.until(ExpectedConditions.visibilityOf(languageButton));
-        String languageText = languageButton.getText();
-
-        return languageText;
+        return waitForVisibilityOfElement(driver, Duration.ofSeconds(3), languageButton).getText();
     }
 
     public void setLanguage(String languageValue) {
         if (isLanguageSelected(languageValue)) {
-            LOGGER.info(String.format("%s is already selected", languageValue));
+            LOGGER.info(format("%s is already selected", languageValue));
             return;
         }
-        WebDriverWait webDriverWait = new WebDriverWait(driver, Duration.ofSeconds(3));
-        webDriverWait.until(ExpectedConditions.visibilityOf(languageButton));
-        languageButton.click();
-        WebElement languageOption = driver.findElement(By.xpath(String.format(langOption, languageValue)));
+        waitForVisibilityOfElement(driver, Duration.ofSeconds(3), languageButton).click();
+        WebElement languageOption = driver.findElement(By.xpath(format(LANG_OPTION, languageValue)));
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(3000));
         languageOption.click();
     }
@@ -71,5 +61,4 @@ public class HomePage extends BasePage {
     public boolean isLanguageSelected(String languageValue) {
         return getLanguageText().equals(languageValue);
     }
-
 }
