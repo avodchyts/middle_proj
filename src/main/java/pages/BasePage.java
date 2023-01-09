@@ -29,6 +29,8 @@ public class BasePage {
     }
 
     protected static List<String> getSortByHrefList(List<WebElement> webElements) {
-        return webElements.stream().map(o -> o.getAttribute("href")).collect(Collectors.toList());
+        return webElements.stream()
+                .map(o -> o.getAttribute("href"))
+                .collect(Collectors.toList());
     }
 }
