@@ -33,20 +33,17 @@ public class HomePage extends BasePage {
     public HomePage(WebDriver driver) {
         super(driver);
     }
-
     public HomePage openHomePage() {
         driver.navigate().to(PAGE_URL);
         return this;
     }
 
     public List<String> getLinks() {
-        return linksList.stream().filter(x -> x.getAttribute("href") != null).map(o -> o.getAttribute("href")).collect(Collectors.toList());
+        return getSortByHrefAndNullCheckList(linksList);
     }
-
     public String getLanguageText() {
         return waitForVisibilityOfElement(driver, Duration.ofSeconds(3), languageButton).getText();
     }
-
     public void setLanguage(String languageValue) {
         if (isLanguageSelected(languageValue)) {
             LOGGER.info(format("%s is already selected", languageValue));
