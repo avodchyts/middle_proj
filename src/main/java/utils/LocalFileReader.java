@@ -10,20 +10,25 @@ import java.io.IOException;
 import java.util.Properties;
 
 public class LocalFileReader {
+    private static LocalFileReader localFileReader;
     private final static Logger LOGGER = Logger.getLogger(LocalFileReader.class);
 
-    public LocalFileReader() {
+    private LocalFileReader() {
     }
 
-    public static String getAppPropertiesValue(String propertiesValue) {
+    public static LocalFileReader getLocalFileReaderInstance() {
+        localFileReader = new LocalFileReader();
+        return localFileReader;
+    }
+    public String getAppPropertiesValue(String propertiesValue) {
         return getPropertiesValue("src/main/java/resources/data.properties", propertiesValue).toString();
     }
 
-    public static String getPropertiesValue(String fileName, String propertiesKey) {
+    public  String getPropertiesValue(String fileName, String propertiesKey) {
         return getFilePropertiesValue(fileName).get(propertiesKey).toString();
     }
 
-    public static Properties getFilePropertiesValue(String fileName) {
+    public  Properties getFilePropertiesValue(String fileName) {
         Properties properties = new Properties();
         try {
             FileReader fileReader = new FileReader(fileName);
