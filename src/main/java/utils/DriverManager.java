@@ -2,24 +2,24 @@ package utils;
 
 import org.openqa.selenium.WebDriver;
 
-public class DriverManager {
+import java.util.Objects;
+import java.util.function.Supplier;
 
-    private static DriverManager driverManager;
-    private static WebDriver driver;
+public class DriverManager implements Supplier<WebDriver> {
+    private WebDriver driver;
+    private final Supplier<WebDriver> driverSupplier;
 
-    private DriverManager() {
-        driver = DriverFactory.selectDriver();
+    public DriverManager(Supplier<WebDriver> driverSupplier) {
+        this.driverSupplier = driverSupplier;
     }
-
-    public static DriverManager getInstance() {
-        driverManager = new DriverManager();
-        return driverManager;
-    }
-
-    public WebDriver getDriver() {
+    public WebDriver get() {
+        if (Objects.isNull(this.driver)) {
+            this.driver = driverSupplier.get();
+            this.driver.manage().window().maximize();
+            Runtime current = Runtime.getRuntime();
+            current.addShutdownHook(new DriverHook(this.driver));
+        }
         return driver;
     }
-    public void closeDriver() {
-        driver.quit();
-    }
 }
+

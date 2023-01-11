@@ -11,7 +11,7 @@ public enum EnvironmentsValues {
 
     public static String getUrlValue() {
         String url;
-        switch (LocalFileReader.getLocalFileReaderInstance().getAppPropertiesValue("environment.name")) {
+        switch (LocalFileReader.INSTANCE.getAppPropertiesValue("environment.name")) {
             case "PROD": {
                 url = PROD.urlValue;
             }
@@ -21,7 +21,7 @@ public enum EnvironmentsValues {
                 break;
             }
             default:
-                throw new IllegalStateException("Unexpected value: " + LocalFileReader.getLocalFileReaderInstance().getAppPropertiesValue("environment.name"));
+                throw new IllegalStateException("Unexpected value: ".concat(LocalFileReader.INSTANCE.getAppPropertiesValue("environment.name")));
         }
         return url;
     }

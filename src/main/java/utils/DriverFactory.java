@@ -1,38 +1,47 @@
 package utils;
+
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebDriverException;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 
-public class DriverFactory {
-    private static final Logger LOGGER = Logger.getLogger(DriverFactory.class);
-    private static WebDriver driver;
-    private DriverFactory() {
+import java.util.function.Supplier;
+
+import static java.lang.String.format;
+
+public enum DriverFactory implements Supplier<WebDriver> {
+    CHROME(ChromeDriver::new),
+    EDGE(EdgeDriver::new);
+
+    private DriverFactory(Supplier<WebDriver> driverSupplier) {
+        this.driverSupplier = driverSupplier;
     }
-    public static WebDriver selectDriver() {
-        switch (LocalFileReader.getLocalFileReaderInstance().getAppPropertiesValue("browser.name")) {
-            case "Chrome": {
-                setUpChromeDriver();
-                LOGGER.info("Chrome driver is started");
-                break;
+
+    private static final Logger LOGGER = Logger.getLogger(DriverFactory.class);
+    private final Supplier<WebDriver> driverSupplier;
+
+    public WebDriver get() {
+        return this.driverSupplier.get();
+    }
+
+    public static Supplier<WebDriver> selectDriverSupplier(String driverName) {
+        DriverFactory dS = DriverFactory.valueOf(driverName.toUpperCase());
+        switch (dS) {
+            case CHROME: {
+                System.setProperty("webdriver.chrome.driver", "C:\\Drivers\\chromedriver_win32\\chromedriver.exe");
+                return DriverFactory.CHROME;
             }
-            case "Edge": {
-                driver = new EdgeDriver();
-                break;
+            case EDGE: {
+                return DriverFactory.EDGE;
             }
             default: {
-                LOGGER.error("Browser name is not correct");
-                LOGGER.info("Default driver is Chrome Driver");
-                setUpChromeDriver();
-                break;
+                LOGGER.error(format("Could not find driver supplier for {}", driverName));
+                LOGGER.info(format("Could not find driver supplier for {}, getting Chrome", driverName));
+                return DriverFactory.CHROME;
             }
         }
-        return driver;
-    }
-    private static WebDriver setUpChromeDriver() {
-        System.setProperty("webdriver.chrome.driver", "C:\\Drivers\\chromedriver_win32\\chromedriver.exe");
-        driver = new ChromeDriver();
-        return driver;
     }
 }
+
+

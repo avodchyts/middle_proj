@@ -32,7 +32,7 @@ public class MainTest extends BaseTest {
         SoftAssert softAssert = new SoftAssert();
         Pattern pattern = Pattern.compile("4\\d{2}");
 
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(getDriver());
         homePage.openHomePage();
 
         List<String> links = homePage.getLinks();
@@ -57,11 +57,11 @@ public class MainTest extends BaseTest {
     @Test(description = "Check languages links", enabled = false)
     public void languagesLinksTest() {
         SoftAssert softAssert = new SoftAssert();
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(getDriver());
         homePage.openHomePage();
         String currentLanguage = homePage.getLanguageText();
         LOGGER.info(String.format("Current language is %s", currentLanguage));
-        NavigationHeaderUtilityPage navigationHeaderUtilityPage = new NavigationHeaderUtilityPage(driver);
+        NavigationHeaderUtilityPage navigationHeaderUtilityPage = new NavigationHeaderUtilityPage(getDriver());
         Map<String, String> languagesLinksMap = navigationHeaderUtilityPage.getLanguagesMap();
         for (Map.Entry<String, String> languageLink : languagesLinksMap.entrySet()) {
             String examLink = languageLink.getValue();
@@ -101,7 +101,7 @@ public class MainTest extends BaseTest {
     @Deprecated
     public void navigationHeaderUtilityLinksDefaultLanguageTest() {
         SoftAssert softAssert = new SoftAssert();
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(getDriver());
         homePage.openHomePage();
         String currentLanguage = homePage.getLanguageText();
         String currentLanguageMeaning;
@@ -116,7 +116,7 @@ public class MainTest extends BaseTest {
             }
             shortDescriptionsList.add(langValues.langMeaning);
         }
-        NavigationHeaderUtilityPage navigationHeaderUtilityPage = new NavigationHeaderUtilityPage(driver);
+        NavigationHeaderUtilityPage navigationHeaderUtilityPage = new NavigationHeaderUtilityPage(getDriver());
         List<String> utilityHeaderLinks = navigationHeaderUtilityPage.getUtilityLinks();
         utilityHeaderLinks.add(navigationHeaderUtilityPage.getLoginLink());
 
@@ -160,7 +160,7 @@ public class MainTest extends BaseTest {
    @Deprecated
     public void navigationMaimMenuLinksDefaultLanguageTest() {
         SoftAssert softAssert = new SoftAssert();
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(getDriver());
         homePage.openHomePage();
         String currentLanguage = homePage.getLanguageText();
         String currentLanguageMeaning;
@@ -177,7 +177,7 @@ public class MainTest extends BaseTest {
             shortMainMenuDescriptionsList.add(langValues.langMeaning);
         }
 
-        NavigationMainPage navigationMainPage = new NavigationMainPage(driver);
+        NavigationMainPage navigationMainPage = new NavigationMainPage(getDriver());
         List<String> mainMenuLinks = navigationMainPage.getMainNavigationLinks();
         String localisationFiltMean = "nutanix.com";
         String globalFiltMean = "nutanix.";
@@ -218,7 +218,7 @@ public class MainTest extends BaseTest {
     @Description("Check navigation main menu sub links for default language")
     public void navigationMaimMenuSubLinksDefaultLanguageTest() {
         SoftAssert softAssert = new SoftAssert();
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(getDriver());
         homePage.openHomePage();
         String currentLanguage = homePage.getLanguageText();
         String currentLanguageMeaning;
@@ -235,7 +235,7 @@ public class MainTest extends BaseTest {
             shortSubMainMenuDescriptionsList.add(langValues.langMeaning);
         }
 
-        NavigationMainPage navigationMainPage = new NavigationMainPage(driver);
+        NavigationMainPage navigationMainPage = new NavigationMainPage(getDriver());
         List<String> subMainMenuLinks = navigationMainPage.getMainNavigationSubLinks();
         String localisationFiltMean = "nutanix.com";
         String globalFiltMean = "nutanix.";
@@ -277,7 +277,7 @@ public class MainTest extends BaseTest {
     @Test(description = "Check navigation header utility links with selected languages", enabled = false)
     public void navigationHeaderUtilityLinksSpecLanguageTest() {
         SoftAssert softAssert = new SoftAssert();
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(getDriver());
         homePage.openHomePage();
         String currentLanguage = homePage.getLanguageText();
         List<String> shortHeaderUtilityDescriptionsList = new ArrayList<String>();
@@ -297,7 +297,7 @@ public class MainTest extends BaseTest {
                 shortHeaderUtilityDescriptionsList.add(languageMeaning.langMeaning);
             }
             currentLanguage = ma;
-            NavigationHeaderUtilityPage navigationHeaderUtilityPage = new NavigationHeaderUtilityPage(driver);
+            NavigationHeaderUtilityPage navigationHeaderUtilityPage = new NavigationHeaderUtilityPage(getDriver());
             List<String> utilityHeaderLinks = navigationHeaderUtilityPage.getUtilityLinks();
             utilityHeaderLinks.add(navigationHeaderUtilityPage.getLoginLink());
             String localisationFiltMean = String.format(".com/%s/", currentLangShortDesc);
@@ -334,7 +334,7 @@ public class MainTest extends BaseTest {
 
     public void navigationMainLinksSpecLanguageTest() {
         SoftAssert softAssert = new SoftAssert();
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(getDriver());
         homePage.openHomePage();
         String currentLanguage = homePage.getLanguageText();
 
@@ -356,7 +356,7 @@ public class MainTest extends BaseTest {
                 shortMainMenuDescriptionsList.add(languageMeaning.langMeaning);
             }
 
-            NavigationMainPage navigationMainPage = new NavigationMainPage(driver);
+            NavigationMainPage navigationMainPage = new NavigationMainPage(getDriver());
             List<String> mainMenuLinks = navigationMainPage.getMainNavigationLinks();
 
             String localisationFiltMean = String.format(".com/%s/", shortDescrSelectedLanguage);
@@ -394,7 +394,7 @@ public class MainTest extends BaseTest {
     @Test(description = "Check sub main navigation links with selected languages", enabled = false)
     public void navigationMainSubLinksSpecLanguageTest() {
         SoftAssert softAssert = new SoftAssert();
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(getDriver());
         homePage.openHomePage();
         String currentLanguage = homePage.getLanguageText();
 
@@ -415,7 +415,7 @@ public class MainTest extends BaseTest {
                     continue;
                 shortMainMenuDescriptionsList.add(languageMeaning.langMeaning);
             }
-            NavigationMainPage navigationMainPage = new NavigationMainPage(driver);
+            NavigationMainPage navigationMainPage = new NavigationMainPage(getDriver());
             List<String> subMainMenuLinks = navigationMainPage.getMainNavigationSubLinks();
 
             String localisationFiltMean = String.format(".com/%s/", shortDescrSelectedLanguage);
@@ -454,6 +454,7 @@ public class MainTest extends BaseTest {
         }
         softAssert.assertAll();
     }
+
 
     private void linkAPIChecks(SoftAssert softAssert, String link) {
         LOGGER.info(String.format("API checking link: %s", link));
