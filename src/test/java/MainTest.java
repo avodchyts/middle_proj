@@ -7,7 +7,7 @@ import org.testng.asserts.SoftAssert;
 import pages.HomePage;
 import pages.NavigationHeaderUtilityPage;
 import pages.NavigationMainPage;
-import utils.LangValues;
+import utils.LangValue;
 import utils.ListenerTest;
 
 import java.util.ArrayList;
@@ -18,7 +18,6 @@ import java.util.regex.Pattern;
 import java.util.stream.Collectors;
 
 import static io.restassured.RestAssured.given;
-@Listeners(value = ListenerTest.class)
 
 public class MainTest extends BaseTest {
     private static final Logger LOGGER = Logger.getLogger(MainTest.class);
@@ -27,41 +26,14 @@ public class MainTest extends BaseTest {
     private static String patternValue = ".com/" + langVal;
     private static final Pattern linkStructPattern = Pattern.compile(patternValue);
 
-    @Test(description = "API links checking")
-    public void allLinksCheckTests() {
-        SoftAssert softAssert = new SoftAssert();
-        Pattern pattern = Pattern.compile("4\\d{2}");
-
-        HomePage homePage = new HomePage(driver);
-        homePage.openHomePage();
-
-        List<String> links = homePage.getLinks();
-        for (int i = 0; i < links.size(); i++) {
-            String url = links.get(i);
-            if (url.contains("www.nutanix.in"))
-                continue;
-            LOGGER.info(url);
-            LOGGER.info(String.format("Index url: %d", i));
-            ValidatableResponse validatableResponse = given().contentType("application/json").when().get(url).then();
-            String lineValue = validatableResponse.extract().statusLine();
-            String codeStatus = String.valueOf(validatableResponse.extract().statusCode());
-            validatableResponse.log().status();
-            Matcher matcher = pattern.matcher(lineValue);
-            softAssert.assertFalse(matcher.find(), String.format("Link is not valid: %s, status code: %s", url, codeStatus));
-        }
-        softAssert.assertAll();
-    }
-// #################################################################
-
-   @Deprecated
-    @Test(description = "Check languages links", enabled = false)
+    @Test(description = "Check languages links", enabled = true)
     public void languagesLinksTest() {
         SoftAssert softAssert = new SoftAssert();
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(getDriver());
         homePage.openHomePage();
         String currentLanguage = homePage.getLanguageText();
         LOGGER.info(String.format("Current language is %s", currentLanguage));
-        NavigationHeaderUtilityPage navigationHeaderUtilityPage = new NavigationHeaderUtilityPage(driver);
+        NavigationHeaderUtilityPage navigationHeaderUtilityPage = new NavigationHeaderUtilityPage(getDriver());
         Map<String, String> languagesLinksMap = navigationHeaderUtilityPage.getLanguagesMap();
         for (Map.Entry<String, String> languageLink : languagesLinksMap.entrySet()) {
             String examLink = languageLink.getValue();
@@ -69,15 +41,15 @@ public class MainTest extends BaseTest {
             softAssert.assertFalse(contextMatcher.find(), String.format("Link has context structure %s", examLink));
         }
 
-        for (LangValues langValue : LangValues.values()) {
+        for (LangValue langValue : LangValue.values()) {
             String nv = langValue.languageValue;
-            if (langValue.languageValue.equals(currentLanguage) || langValue.equals(LangValues.INDIAN)) {
+            if (langValue.languageValue.equals(currentLanguage) || langValue.equals(LangValue.INDIAN)) {
                 continue;
             }
-            if (langValue.equals(LangValues.CHINES)) {
+            if (langValue.equals(LangValue.CHINES)) {
                 String link = languagesLinksMap.get(langValue.languageValue);
                 LOGGER.info(String.format("Link value : %s", link));
-                linkAPIChecks(softAssert,link);
+                linkAPIChecks(softAssert, link);
                 String patt = "." + langValue.langMeaning;
                 Pattern pattern = Pattern.compile(patt);
                 Matcher linkStructMatcher = pattern.matcher(link);
@@ -86,7 +58,7 @@ public class MainTest extends BaseTest {
             }
             String langLink = languagesLinksMap.get(langValue.languageValue);
             LOGGER.info(String.format("Link value : %s", langLink));
-            linkAPIChecks(softAssert,langLink);
+            linkAPIChecks(softAssert, langLink);
             String mc = langValue.langMeaning;
             String patWord = ".com/" + mc;
             Pattern pattern = Pattern.compile(patWord);
@@ -97,26 +69,25 @@ public class MainTest extends BaseTest {
         softAssert.assertAll();
     }
 
-    @Test(description = "Check navigation header utility links for default language", enabled = false)
-    @Deprecated
+    @Test(description = "Check navigation header utility links for default language", enabled = true)
     public void navigationHeaderUtilityLinksDefaultLanguageTest() {
         SoftAssert softAssert = new SoftAssert();
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(getDriver());
         homePage.openHomePage();
         String currentLanguage = homePage.getLanguageText();
         String currentLanguageMeaning;
         List<String> shortDescriptionsList = new ArrayList<String>();
         LOGGER.info(String.format("Current language is %s", currentLanguage));
-        for (LangValues langValues : LangValues.values()) {
-            String nv = langValues.languageValue;
-            if (langValues.languageValue.equals(currentLanguage) || langValues.languageValue.equals(LangValues.INDIAN) || langValues.languageValue.equals(LangValues.CHINES)) {
-                currentLanguageMeaning = langValues.langMeaning;
+        for (LangValue langValue : LangValue.values()) {
+            String nv = langValue.languageValue;
+            if (langValue.languageValue.equals(currentLanguage) || langValue.languageValue.equals(LangValue.INDIAN) || langValue.languageValue.equals(LangValue.CHINES)) {
+                currentLanguageMeaning = langValue.langMeaning;
                 LOGGER.info(String.format("Language meaning is %s", currentLanguageMeaning));
                 continue;
             }
-            shortDescriptionsList.add(langValues.langMeaning);
+            shortDescriptionsList.add(langValue.langMeaning);
         }
-        NavigationHeaderUtilityPage navigationHeaderUtilityPage = new NavigationHeaderUtilityPage(driver);
+        NavigationHeaderUtilityPage navigationHeaderUtilityPage = new NavigationHeaderUtilityPage(getDriver());
         List<String> utilityHeaderLinks = navigationHeaderUtilityPage.getUtilityLinks();
         utilityHeaderLinks.add(navigationHeaderUtilityPage.getLoginLink());
 
@@ -156,28 +127,27 @@ public class MainTest extends BaseTest {
         softAssert.assertAll();
     }
 
-    @Test(description = "Check navigation main menu links for default language", enabled = false)
-   @Deprecated
+    @Test(description = "Check navigation main menu links for default language", enabled = true)
     public void navigationMaimMenuLinksDefaultLanguageTest() {
         SoftAssert softAssert = new SoftAssert();
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(getDriver());
         homePage.openHomePage();
         String currentLanguage = homePage.getLanguageText();
         String currentLanguageMeaning;
 
         List<String> shortMainMenuDescriptionsList = new ArrayList<String>();
         LOGGER.info(String.format("Current language is %s", currentLanguage));
-        for (LangValues langValues : LangValues.values()) {
-            String nv = langValues.languageValue;
-            if (langValues.languageValue.equals(currentLanguage)) {
-                currentLanguageMeaning = langValues.langMeaning;
+        for (LangValue langValue : LangValue.values()) {
+            String nv = langValue.languageValue;
+            if (langValue.languageValue.equals(currentLanguage)) {
+                currentLanguageMeaning = langValue.langMeaning;
                 LOGGER.info(String.format("Default language meaning is %s", currentLanguageMeaning));
                 continue;
             }
-            shortMainMenuDescriptionsList.add(langValues.langMeaning);
+            shortMainMenuDescriptionsList.add(langValue.langMeaning);
         }
 
-        NavigationMainPage navigationMainPage = new NavigationMainPage(driver);
+        NavigationMainPage navigationMainPage = new NavigationMainPage(getDriver());
         List<String> mainMenuLinks = navigationMainPage.getMainNavigationLinks();
         String localisationFiltMean = "nutanix.com";
         String globalFiltMean = "nutanix.";
@@ -213,29 +183,28 @@ public class MainTest extends BaseTest {
         softAssert.assertAll();
     }
 
-    @Test(enabled = false)
-    @Deprecated
+    @Test(enabled = true)
     @Description("Check navigation main menu sub links for default language")
     public void navigationMaimMenuSubLinksDefaultLanguageTest() {
         SoftAssert softAssert = new SoftAssert();
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(getDriver());
         homePage.openHomePage();
         String currentLanguage = homePage.getLanguageText();
         String currentLanguageMeaning;
 
         List<String> shortSubMainMenuDescriptionsList = new ArrayList<String>();
         LOGGER.info(String.format("Current language is %s", currentLanguage));
-        for (LangValues langValues : LangValues.values()) {
-            String nv = langValues.languageValue;
-            if (langValues.languageValue.equals(currentLanguage) || langValues.languageValue.equals(LangValues.INDIAN)|| langValues.languageValue.equals(LangValues.CHINES)) {
-                currentLanguageMeaning = langValues.langMeaning;
+        for (LangValue langValue : LangValue.values()) {
+            String nv = langValue.languageValue;
+            if (langValue.languageValue.equals(currentLanguage) || langValue.languageValue.equals(LangValue.INDIAN) || langValue.languageValue.equals(LangValue.CHINES)) {
+                currentLanguageMeaning = langValue.langMeaning;
                 LOGGER.info(String.format("Default language meaning is %s", currentLanguageMeaning));
                 continue;
             }
-            shortSubMainMenuDescriptionsList.add(langValues.langMeaning);
+            shortSubMainMenuDescriptionsList.add(langValue.langMeaning);
         }
 
-        NavigationMainPage navigationMainPage = new NavigationMainPage(driver);
+        NavigationMainPage navigationMainPage = new NavigationMainPage(getDriver());
         List<String> subMainMenuLinks = navigationMainPage.getMainNavigationSubLinks();
         String localisationFiltMean = "nutanix.com";
         String globalFiltMean = "nutanix.";
@@ -273,16 +242,15 @@ public class MainTest extends BaseTest {
         softAssert.assertAll();
     }
 
-   @Deprecated
-    @Test(description = "Check navigation header utility links with selected languages", enabled = false)
+    @Test(description = "Check navigation header utility links with selected languages", enabled = true)
     public void navigationHeaderUtilityLinksSpecLanguageTest() {
         SoftAssert softAssert = new SoftAssert();
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(getDriver());
         homePage.openHomePage();
         String currentLanguage = homePage.getLanguageText();
         List<String> shortHeaderUtilityDescriptionsList = new ArrayList<String>();
-        for (LangValues language : LangValues.values()) {
-            if (language.languageValue.equals(currentLanguage) | language.languageValue.equals(LangValues.INDIAN.languageValue))
+        for (LangValue language : LangValue.values()) {
+            if (language.languageValue.equals(currentLanguage) | language.languageValue.equals(LangValue.INDIAN.languageValue))
                 continue;
             String currentLangShortDesc = language.langMeaning;
             LOGGER.info(String.format("Next language for set: %s", language.languageValue));
@@ -291,13 +259,13 @@ public class MainTest extends BaseTest {
 
             LOGGER.info(String.format("Updated language value: %s", ma));
             softAssert.assertTrue(ma.contains(language.languageValue), String.format("Language %S doesn't set", ma));
-            for (LangValues languageMeaning : LangValues.values()) {
-                if (languageMeaning.languageValue.equals(currentLanguage) | languageMeaning.languageValue.equals(LangValues.INDIAN.languageValue) | languageMeaning.languageValue.equals((LangValues.ENGLISH.languageValue)))
+            for (LangValue languageMeaning : LangValue.values()) {
+                if (languageMeaning.languageValue.equals(currentLanguage) || languageMeaning.languageValue.equals(LangValue.INDIAN.languageValue) || languageMeaning.languageValue.equals((LangValue.ENGLISH.languageValue)))
                     continue;
                 shortHeaderUtilityDescriptionsList.add(languageMeaning.langMeaning);
             }
             currentLanguage = ma;
-            NavigationHeaderUtilityPage navigationHeaderUtilityPage = new NavigationHeaderUtilityPage(driver);
+            NavigationHeaderUtilityPage navigationHeaderUtilityPage = new NavigationHeaderUtilityPage(getDriver());
             List<String> utilityHeaderLinks = navigationHeaderUtilityPage.getUtilityLinks();
             utilityHeaderLinks.add(navigationHeaderUtilityPage.getLoginLink());
             String localisationFiltMean = String.format(".com/%s/", currentLangShortDesc);
@@ -329,19 +297,18 @@ public class MainTest extends BaseTest {
         }
         softAssert.assertAll();
     }
-@Deprecated
-    @Test(description = "Check main navigation links with selected languages", enabled = false)
 
+    @Test(description = "Check main navigation links with selected languages", enabled = true)
     public void navigationMainLinksSpecLanguageTest() {
         SoftAssert softAssert = new SoftAssert();
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(getDriver());
         homePage.openHomePage();
         String currentLanguage = homePage.getLanguageText();
 
         List<String> shortMainMenuDescriptionsList = new ArrayList<String>();
         LOGGER.info(String.format("Current language is %s", currentLanguage));
-        for (LangValues language : LangValues.values()) {
-            if (language.languageValue.equals(currentLanguage) || language.languageValue.equals(LangValues.INDIAN.languageValue))
+        for (LangValue language : LangValue.values()) {
+            if (language.languageValue.equals(currentLanguage) || language.languageValue.equals(LangValue.INDIAN.languageValue))
                 continue;
             LOGGER.info(String.format("Next language for set: %s", language.languageValue));
             homePage.setLanguage(language.languageValue);
@@ -350,13 +317,13 @@ public class MainTest extends BaseTest {
             LOGGER.info(String.format("Updated language value: %s", ma));
             softAssert.assertTrue(ma.contains(language.languageValue), String.format("Language %S doesn't set", ma));
             currentLanguage = ma;
-            for (LangValues languageMeaning : LangValues.values()) {
-                if (languageMeaning.languageValue.equals(currentLanguage) || languageMeaning.languageValue.equals(LangValues.INDIAN.languageValue) || languageMeaning.languageValue.equals((LangValues.ENGLISH.languageValue)))
+            for (LangValue languageMeaning : LangValue.values()) {
+                if (languageMeaning.languageValue.equals(currentLanguage) || languageMeaning.languageValue.equals(LangValue.INDIAN.languageValue) || languageMeaning.languageValue.equals((LangValue.ENGLISH.languageValue)))
                     continue;
                 shortMainMenuDescriptionsList.add(languageMeaning.langMeaning);
             }
 
-            NavigationMainPage navigationMainPage = new NavigationMainPage(driver);
+            NavigationMainPage navigationMainPage = new NavigationMainPage(getDriver());
             List<String> mainMenuLinks = navigationMainPage.getMainNavigationLinks();
 
             String localisationFiltMean = String.format(".com/%s/", shortDescrSelectedLanguage);
@@ -389,19 +356,17 @@ public class MainTest extends BaseTest {
         softAssert.assertAll();
     }
 
-
-    @Deprecated
-    @Test(description = "Check sub main navigation links with selected languages", enabled = false)
+    @Test(description = "Check sub main navigation links with selected languages", enabled = true)
     public void navigationMainSubLinksSpecLanguageTest() {
         SoftAssert softAssert = new SoftAssert();
-        HomePage homePage = new HomePage(driver);
+        HomePage homePage = new HomePage(getDriver());
         homePage.openHomePage();
         String currentLanguage = homePage.getLanguageText();
 
         List<String> shortMainMenuDescriptionsList = new ArrayList<String>();
         LOGGER.info(String.format("Current language is %s", currentLanguage));
-        for (LangValues language : LangValues.values()) {
-            if (language.languageValue.equals(currentLanguage) | language.languageValue.equals(LangValues.INDIAN.languageValue))
+        for (LangValue language : LangValue.values()) {
+            if (language.languageValue.equals(currentLanguage) || language.languageValue.equals(LangValue.INDIAN.languageValue))
                 continue;
             LOGGER.info(String.format("Next language for set: %s", language.languageValue));
             homePage.setLanguage(language.languageValue);
@@ -410,12 +375,12 @@ public class MainTest extends BaseTest {
             LOGGER.info(String.format("Updated language value: %s", ma));
             softAssert.assertTrue(ma.contains(language.languageValue), String.format("Language %S doesn't set", ma));
             currentLanguage = ma;
-            for (LangValues languageMeaning : LangValues.values()) {
-                if (languageMeaning.languageValue.equals(currentLanguage) | languageMeaning.languageValue.equals(LangValues.INDIAN.languageValue) | languageMeaning.languageValue.equals((LangValues.ENGLISH.languageValue)))
+            for (LangValue languageMeaning : LangValue.values()) {
+                if (languageMeaning.languageValue.equals(currentLanguage) || languageMeaning.languageValue.equals(LangValue.INDIAN.languageValue) || languageMeaning.languageValue.equals((LangValue.ENGLISH.languageValue)))
                     continue;
                 shortMainMenuDescriptionsList.add(languageMeaning.langMeaning);
             }
-            NavigationMainPage navigationMainPage = new NavigationMainPage(driver);
+            NavigationMainPage navigationMainPage = new NavigationMainPage(getDriver());
             List<String> subMainMenuLinks = navigationMainPage.getMainNavigationSubLinks();
 
             String localisationFiltMean = String.format(".com/%s/", shortDescrSelectedLanguage);
@@ -455,6 +420,7 @@ public class MainTest extends BaseTest {
         softAssert.assertAll();
     }
 
+
     private void linkAPIChecks(SoftAssert softAssert, String link) {
         LOGGER.info(String.format("API checking link: %s", link));
         Pattern patternApi = Pattern.compile("4\\d{2}");
@@ -469,6 +435,5 @@ public class MainTest extends BaseTest {
         Matcher contextMatcher = contentPattern.matcher(link);
         softAssert.assertFalse(contextMatcher.find(), String.format("Link has context structure %s", link));
     }
-
 }
 

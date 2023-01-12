@@ -1,6 +1,6 @@
 package utils;
 
-public enum LangValues {
+public enum LangValue {
     ENGLISH("United States (English)", ""),
     DEUTSCH("Deutschland (Deutsch)", "de"),
     SPAIN("España (Español)", "es"),
@@ -17,16 +17,13 @@ public enum LangValues {
     ASIA_PACIFIC_ENGLISH("Asia Pacific (English)","sg");
     public String languageValue;
     public String langMeaning;
-
-    private LangValues(String languageValue, String langMeaning) {
+    private LangValue(String languageValue, String langMeaning) {
         this.languageValue = languageValue;
         this.langMeaning = langMeaning;
     }
-
     public String getLanguageValue() {
         return languageValue;
     }
-
     public String getLangMeaning() {
         return langMeaning;
     }

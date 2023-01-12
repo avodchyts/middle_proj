@@ -20,8 +20,8 @@ private static final Logger LOGGER = Logger.getLogger(ListenerTest.class);
     public void onTestStart(ITestResult result) {
 
         LOGGER.info(String.format("%s was started", result.getName()));
-        LOGGER.info(LocalFileReader.getLocalFileReaderInstance().getAppPropertiesValue("environment.name"));
-        LOGGER.info(LocalFileReader.getLocalFileReaderInstance().getAppPropertiesValue("browser.name"));
+        LOGGER.info(LocalFileReader.INSTANCE.getAppPropertiesValue("environment.name"));
+        LOGGER.info(LocalFileReader.INSTANCE.getAppPropertiesValue("browser.name"));
     }
 
     @Override
@@ -32,7 +32,6 @@ private static final Logger LOGGER = Logger.getLogger(ListenerTest.class);
     @Override
     public void onTestFailure(ITestResult result) {
         LOGGER.info(String.format("%S was failed", result.getName()));
-        //takeScreenshot();
     }
 
     private void takeScreenshot()  {

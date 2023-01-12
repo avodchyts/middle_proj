@@ -14,7 +14,7 @@
 
     <test name="API links checking">
         <classes>
-            <class name="MainTest">
+            <class name="ApiTest">
                 <methods>
                     <include name="allLinksCheckTests"/>
                 </methods>
@@ -22,68 +22,68 @@
         </classes>
     </test>
 
-<!--    <test name="Check languages links">-->
-<!--        <classes>-->
-<!--            <class name="MainTest">-->
-<!--                <methods>-->
-<!--                    <include name="languagesLinksTest"/>-->
-<!--                </methods>-->
-<!--            </class>-->
-<!--        </classes>-->
-<!--    </test>-->
+    <test name="Check languages links">
+        <classes>
+            <class name="MainTest">
+                <methods>
+                    <include name="languagesLinksTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
 
-<!--    <test name="Check navigation header utility links for default language">-->
-<!--        <classes>-->
-<!--            <class name="MainTest">-->
-<!--                <methods>-->
-<!--                    <include name="navigationHeaderUtilityLinksDefaultLanguageTest"/>-->
-<!--                </methods>-->
-<!--            </class>-->
-<!--        </classes>-->
-<!--    </test>-->
-<!--    <test name="Check navigation main menu links for default language">-->
-<!--        <classes>-->
-<!--            <class name="MainTest">-->
-<!--                <methods>-->
-<!--                    <include name="navigationMaimMenuLinksDefaultLanguageTest"/>-->
-<!--                </methods>-->
-<!--            </class>-->
-<!--        </classes>-->
-<!--    </test>-->
-<!--    <test name="Check navigation main menu sub links for default language">-->
-<!--        <classes>-->
-<!--            <class name="MainTest">-->
-<!--                <methods>-->
-<!--                    <include name="navigationMaimMenuSubLinksDefaultLanguageTest"/>-->
-<!--                </methods>-->
-<!--            </class>-->
-<!--        </classes>-->
-<!--    </test>-->
-<!--    <test name="Check navigation header utility links with selected languages">-->
-<!--        <classes>-->
-<!--            <class name="MainTest">-->
-<!--                <methods>-->
-<!--                    <include name="navigationHeaderUtilityLinksSpecLanguageTest"/>-->
-<!--                </methods>-->
-<!--            </class>-->
-<!--        </classes>-->
-<!--    </test>-->
-<!--    <test name="Check main navigation links with selected languages">-->
-<!--        <classes>-->
-<!--            <class name="MainTest">-->
-<!--                <methods>-->
-<!--                    <include name="navigationMainLinksSpecLanguageTest"/>-->
-<!--                </methods>-->
-<!--            </class>-->
-<!--        </classes>-->
-<!--    </test>-->
-<!--    <test name="Check sub main navigation links with selected languages">-->
-<!--        <classes>-->
-<!--            <class name="MainTest">-->
-<!--                <methods>-->
-<!--                    <include name="navigationMainSubLinksSpecLanguageTest"/>-->
-<!--                </methods>-->
-<!--            </class>-->
-<!--        </classes>-->
-<!--    </test>-->
+    <test name="Check navigation header utility links for default language">
+        <classes>
+            <class name="MainTest">
+                <methods>
+                    <include name="navigationHeaderUtilityLinksDefaultLanguageTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Check navigation main menu links for default language">
+        <classes>
+            <class name="MainTest">
+                <methods>
+                    <include name="navigationMaimMenuLinksDefaultLanguageTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Check navigation main menu sub links for default language">
+        <classes>
+            <class name="MainTest">
+                <methods>
+                    <include name="navigationMaimMenuSubLinksDefaultLanguageTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Check navigation header utility links with selected languages">
+        <classes>
+            <class name="MainTest">
+                <methods>
+                    <include name="navigationHeaderUtilityLinksSpecLanguageTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Check main navigation links with selected languages">
+        <classes>
+            <class name="MainTest">
+                <methods>
+                    <include name="navigationMainLinksSpecLanguageTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
+    <test name="Check sub main navigation links with selected languages">
+        <classes>
+            <class name="MainTest">
+                <methods>
+                    <include name="navigationMainSubLinksSpecLanguageTest"/>
+                </methods>
+            </class>
+        </classes>
+    </test>
 </suite>
