@@ -8,12 +8,14 @@ import java.util.Objects;
 import static java.lang.String.format;
 
 public class DriverHook extends Thread {
-private final static Logger LOGGER = Logger.getLogger(DriverHook.class);
+    private final static Logger LOGGER = Logger.getLogger(DriverHook.class);
 
     public WebDriver driver;
+
     public DriverHook(WebDriver driver) {
         this.driver = driver;
     }
+
     public void driverClose() {
         if (Objects.nonNull(driver)) {
             try {

@@ -5,21 +5,16 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import org.openqa.selenium.support.PageFactory;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-import utils.EnvironmentsValues;
+import utils.EnvironmentsValue;
 
 import java.time.Duration;
-import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import static java.text.MessageFormat.format;
 
 public class HomePage extends BasePage {
     private static final Logger LOGGER = Logger.getLogger(HomePage.class);
-    private final static String PAGE_URL = EnvironmentsValues.getUrlValue();
+    private final static String PAGE_URL = EnvironmentsValue.getUrlValue();
     private final static String LANG_OPTION = "//li/a[text()='%s']";
     @FindBy(xpath = "//button[@id='toggle-language']")
     private WebElement languageButton;

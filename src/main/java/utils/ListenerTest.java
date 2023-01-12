@@ -32,7 +32,6 @@ private static final Logger LOGGER = Logger.getLogger(ListenerTest.class);
     @Override
     public void onTestFailure(ITestResult result) {
         LOGGER.info(String.format("%S was failed", result.getName()));
-        //takeScreenshot();
     }
 
     private void takeScreenshot()  {
