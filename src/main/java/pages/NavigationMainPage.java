@@ -17,7 +17,7 @@ public class NavigationMainPage extends BasePage{
         super(driver);
     }
     public List<String> getMainNavigationLinks() {
-        return mainNavigationLinks.stream().map(o -> o.getAttribute("href")).collect(Collectors.toList());
+        return getSortByHrefList(mainNavigationLinks);
     }
     public List<String> getMainNavigationTabNames() {
         return mainNavigationLinks.stream().map(o -> o.getText()).collect(Collectors.toList());
@@ -28,7 +28,7 @@ public class NavigationMainPage extends BasePage{
         List<String> tabNames = getMainNavigationTabNames().stream().filter(x -> !x.contains("Test Drive")).collect(Collectors.toList());
         for (String tabName : tabNames) {
             List<WebElement> webSubLinks = driver.findElements(By.xpath(String.format(tabSubLinkLocator, tabName)));
-            subLinks.addAll(webSubLinks.stream().filter(x -> x.getAttribute("href") != null).map(o -> o.getAttribute("href")).collect(Collectors.toList()));
+            subLinks.addAll(getSortByHrefAndNullCheckList(webSubLinks));
         }
         return subLinks;
     }

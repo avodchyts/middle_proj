@@ -455,7 +455,6 @@ public class MainTest extends BaseTest {
         softAssert.assertAll();
     }
 
-
     private void linkAPIChecks(SoftAssert softAssert, String link) {
         LOGGER.info(String.format("API checking link: %s", link));
         Pattern patternApi = Pattern.compile("4\\d{2}");
