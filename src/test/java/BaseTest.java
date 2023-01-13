@@ -1,8 +1,10 @@
 
+import org.aeonbits.owner.ConfigFactory;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
+import resources.Data;
 import utils.DriverFactory;
 import utils.DriverManager;
 import utils.DriverHook;
@@ -18,6 +20,7 @@ public class BaseTest {
     private static final Logger LOGGER = Logger.getLogger(BaseTest.class);
     private Supplier<WebDriver> driverSupplier;
 
+    private Data propData = ConfigFactory.create(Data.class);
     protected final WebDriver getDriver() {
         if (Objects.isNull(driverSupplier)) {
             throw new IllegalStateException("Driver source is not set!");
@@ -25,30 +28,18 @@ public class BaseTest {
         return this.driverSupplier.get();
     }
 
-    private void setSystemDriver(String browserName) {
-        switch (browserName) {
-            case "CHROME": {
-                System.setProperty("webdriver.chrome.driver", LocalFileReader.INSTANCE.getAppPropertiesValue("chromeDriver.path"));
-                break;
-            }
-            case "EDGE": {
-                System.setProperty("webdriver.chrome.driver", LocalFileReader.INSTANCE.getAppPropertiesValue("edgeDriver.path"));
-                break;
-            }
-            default: {
-                LOGGER.error(format("Unknown browser name: %s", browserName));
-                LOGGER.info(format("default browser is Chrome"));
-                System.setProperty("webdriver.chrome.driver", LocalFileReader.INSTANCE.getAppPropertiesValue("chromeDriver.path"));
-                break;
-            }
-        }
+    protected String getBaseUrl() {
+        return propData.baseUrl();
+    }
+
+    private void setSystemDriver() {
+        System.setProperty(propData.browserSystKey(),propData.driverPath());
     }
 
     @BeforeMethod(alwaysRun = true)
     public void setDriver() {
-        String browserName = LocalFileReader.INSTANCE.getAppPropertiesValue("browser.name");
-        setSystemDriver(browserName);
-        Supplier<WebDriver> driverFactory = DriverFactory.selectDriverSupplier(browserName);
+        setSystemDriver();
+        Supplier<WebDriver> driverFactory = DriverFactory.selectDriverSupplier(propData.browserName());
         this.driverSupplier = new DriverManager(driverFactory);
     }
 

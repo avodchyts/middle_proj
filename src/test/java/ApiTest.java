@@ -12,6 +12,7 @@ import static io.restassured.RestAssured.given;
 
 public class ApiTest extends BaseTest{
     private static final Logger LOGGER = Logger.getLogger(ApiTest.class);
+    private final String URL = getBaseUrl();
 
     @Test(description = "API links checking")
     public void allLinksCheckTests() {
@@ -19,7 +20,7 @@ public class ApiTest extends BaseTest{
         Pattern pattern = Pattern.compile("4\\d{2}");
 
         HomePage homePage = new HomePage(getDriver());
-        homePage.openHomePage();
+        homePage.openHomePage(URL);
 
         List<String> links = homePage.getLinks();
         for (int i = 0; i < links.size(); i++) {
