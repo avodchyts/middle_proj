@@ -17,7 +17,6 @@ public class DriverManager implements Supplier<WebDriver> {
     public WebDriver get() {
         if (Objects.isNull(this.driver)) {
             this.driver = driverSupplier.get();
-            this.driver.manage().window().maximize();
             Runtime current = Runtime.getRuntime();
             current.addShutdownHook(new DriverHook(driver));
             driver = decorators.apply(driver);
