@@ -10,7 +10,7 @@ public class DriverManager implements Supplier<WebDriver> {
     private final Supplier<WebDriver> driverSupplier;
     private final DecoratorPipeline<WebDriver> decorators;
 
-    public DriverManager(Supplier<WebDriver> driverSupplier,DecoratorPipeline<WebDriver> decorators ) {
+    public DriverManager(Supplier<WebDriver> driverSupplier, DecoratorPipeline<WebDriver> decorators) {
         this.driverSupplier = driverSupplier;
         this.decorators= decorators;
     }

@@ -1,16 +1,12 @@
 import io.restassured.response.ValidatableResponse;
 import jdk.jfr.Description;
-import org.aeonbits.owner.ConfigFactory;
 import org.apache.log4j.Logger;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pages.HomePage;
 import pages.NavigationHeaderUtilityPage;
 import pages.NavigationMainPage;
-import resources.Data;
 import utils.LangValue;
-import utils.ListenerTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +23,6 @@ public class MainTest extends BaseTest {
     private static String langVal;
     private static String patternValue = ".com/" + langVal;
     private static final Pattern linkStructPattern = Pattern.compile(patternValue);
-    private final String URL = getBaseUrl();
     @Test(description = "Check languages links", enabled = true)
     public void languagesLinksTest() {
         SoftAssert softAssert = new SoftAssert();
