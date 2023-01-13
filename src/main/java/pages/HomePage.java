@@ -28,8 +28,8 @@ public class HomePage extends BasePage {
     public HomePage(WebDriver driver) {
         super(driver);
     }
-    public HomePage openHomePage() {
-        driver.navigate().to(PAGE_URL);
+    public HomePage openHomePage(String url) {
+        driver.navigate().to(url);
         return this;
     }
 

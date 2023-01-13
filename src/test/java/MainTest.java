@@ -1,14 +1,12 @@
 import io.restassured.response.ValidatableResponse;
 import jdk.jfr.Description;
 import org.apache.log4j.Logger;
-import org.testng.annotations.Listeners;
 import org.testng.annotations.Test;
 import org.testng.asserts.SoftAssert;
 import pages.HomePage;
 import pages.NavigationHeaderUtilityPage;
 import pages.NavigationMainPage;
 import utils.LangValue;
-import utils.ListenerTest;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +23,11 @@ public class MainTest extends BaseTest {
     private static String langVal;
     private static String patternValue = ".com/" + langVal;
     private static final Pattern linkStructPattern = Pattern.compile(patternValue);
-
     @Test(description = "Check languages links", enabled = true)
     public void languagesLinksTest() {
         SoftAssert softAssert = new SoftAssert();
         HomePage homePage = new HomePage(getDriver());
-        homePage.openHomePage();
+        homePage.openHomePage(URL);
         String currentLanguage = homePage.getLanguageText();
         LOGGER.info(String.format("Current language is %s", currentLanguage));
         NavigationHeaderUtilityPage navigationHeaderUtilityPage = new NavigationHeaderUtilityPage(getDriver());
@@ -73,7 +70,7 @@ public class MainTest extends BaseTest {
     public void navigationHeaderUtilityLinksDefaultLanguageTest() {
         SoftAssert softAssert = new SoftAssert();
         HomePage homePage = new HomePage(getDriver());
-        homePage.openHomePage();
+        homePage.openHomePage(URL);
         String currentLanguage = homePage.getLanguageText();
         String currentLanguageMeaning;
         List<String> shortDescriptionsList = new ArrayList<String>();
@@ -131,7 +128,7 @@ public class MainTest extends BaseTest {
     public void navigationMaimMenuLinksDefaultLanguageTest() {
         SoftAssert softAssert = new SoftAssert();
         HomePage homePage = new HomePage(getDriver());
-        homePage.openHomePage();
+        homePage.openHomePage(URL);
         String currentLanguage = homePage.getLanguageText();
         String currentLanguageMeaning;
 
@@ -188,7 +185,7 @@ public class MainTest extends BaseTest {
     public void navigationMaimMenuSubLinksDefaultLanguageTest() {
         SoftAssert softAssert = new SoftAssert();
         HomePage homePage = new HomePage(getDriver());
-        homePage.openHomePage();
+        homePage.openHomePage(URL);
         String currentLanguage = homePage.getLanguageText();
         String currentLanguageMeaning;
 
@@ -246,7 +243,7 @@ public class MainTest extends BaseTest {
     public void navigationHeaderUtilityLinksSpecLanguageTest() {
         SoftAssert softAssert = new SoftAssert();
         HomePage homePage = new HomePage(getDriver());
-        homePage.openHomePage();
+        homePage.openHomePage(URL);
         String currentLanguage = homePage.getLanguageText();
         List<String> shortHeaderUtilityDescriptionsList = new ArrayList<String>();
         for (LangValue language : LangValue.values()) {
@@ -302,7 +299,7 @@ public class MainTest extends BaseTest {
     public void navigationMainLinksSpecLanguageTest() {
         SoftAssert softAssert = new SoftAssert();
         HomePage homePage = new HomePage(getDriver());
-        homePage.openHomePage();
+        homePage.openHomePage(URL);
         String currentLanguage = homePage.getLanguageText();
 
         List<String> shortMainMenuDescriptionsList = new ArrayList<String>();
@@ -360,7 +357,7 @@ public class MainTest extends BaseTest {
     public void navigationMainSubLinksSpecLanguageTest() {
         SoftAssert softAssert = new SoftAssert();
         HomePage homePage = new HomePage(getDriver());
-        homePage.openHomePage();
+        homePage.openHomePage(URL);
         String currentLanguage = homePage.getLanguageText();
 
         List<String> shortMainMenuDescriptionsList = new ArrayList<String>();
