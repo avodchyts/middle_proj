@@ -1,9 +1,9 @@
-package resources;
+package config;
 
 import org.aeonbits.owner.Config;
 @Config.LoadPolicy(Config.LoadType.MERGE)
-@Config.Sources({"classpath:env.${env.name}.properties", "classpath:${browser.name}.browser.properties"})
-public interface Data extends Config {
+@Config.Sources({"classpath:env.${env.name}.properties", "classpath:${browser.name}.browser.properties", "data.properties","classpath:chrome.browser.properties"})
+public interface TestConfig extends Config {
     @Key("base.url")
     String baseUrl();
     @Key("browser.name")
