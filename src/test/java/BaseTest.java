@@ -5,13 +5,11 @@ import org.openqa.selenium.WebDriver;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import resources.Data;
-import utils.DriverFactory;
-import utils.DriverManager;
-import utils.DriverHook;
-import utils.LocalFileReader;
+import utils.*;
 
 import java.util.Objects;
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 import static java.lang.String.format;
 import static java.lang.System.setProperty;
@@ -39,8 +37,13 @@ public class BaseTest {
     @BeforeMethod(alwaysRun = true)
     public void setDriver() {
         setSystemDriver();
+        UnaryOperator<WebDriver> windowMaximizer = driver -> {
+            driver.manage().window().maximize();
+            return driver;
+        };
+        DecoratorPipeline<WebDriver> decorators = new DecoratorPipeline<>(windowMaximizer);
         Supplier<WebDriver> driverFactory = DriverFactory.selectDriverSupplier(propData.browserName());
-        this.driverSupplier = new DriverManager(driverFactory);
+        driverSupplier = new DriverManager(driverFactory, decorators);
     }
 
     @AfterMethod(alwaysRun = true)
