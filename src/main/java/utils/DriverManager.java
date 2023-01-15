@@ -1,6 +1,7 @@
 package utils;
 
 import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.support.events.EventFiringDecorator;
 
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -12,15 +13,25 @@ public class DriverManager implements Supplier<WebDriver> {
 
     public DriverManager(Supplier<WebDriver> driverSupplier, DecoratorPipeline<WebDriver> decorators) {
         this.driverSupplier = driverSupplier;
-        this.decorators= decorators;
+        this.decorators = decorators;
     }
+
     public WebDriver get() {
         if (Objects.isNull(this.driver)) {
             this.driver = driverSupplier.get();
             Runtime current = Runtime.getRuntime();
             current.addShutdownHook(new DriverHook(driver));
-            driver = decorators.apply(driver);
+            driver = new EventFiringDecorator(new WebDriverListenerLocal()).decorate(decorators.apply(driver));
         }
+         /*
+        example of using stupid Decorator
+         if (Objects.isNull(this.driver)) {
+            this.driver = driverSupplier.get();
+            Runtime current = Runtime.getRuntime();
+            current.addShutdownHook(new DriverHook(driver));
+            driver = decorators.execute(driver);
+        }
+         */
         return driver;
     }
 }
