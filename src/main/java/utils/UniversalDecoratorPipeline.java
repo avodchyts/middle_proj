@@ -1,9 +1,9 @@
 package utils;
 
-public class StupidDecoratorPipeline<T> implements Decorator<T> {
+public class UniversalDecoratorPipeline<T> implements Decorator<T> {
     private Decorator<T> decorator;
 
-    public StupidDecoratorPipeline(Decorator<T> decorator) {
+    public UniversalDecoratorPipeline(Decorator<T> decorator) {
         this.decorator = decorator;
     }
 

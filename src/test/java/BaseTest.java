@@ -37,21 +37,10 @@ public class BaseTest {
             return driver;
         };
         DecoratorPipeline<WebDriver> decorators = new DecoratorPipeline<>(windowMaximizer);
+        decorators.addDecorator((UnaryOperator<WebDriver>) new EventFiringDecorator(new WebDriverListenerLocal()).decorate((WebDriver) windowMaximizer));
         Supplier<WebDriver> driverFactory = DriverFactory.selectDriverSupplier(PROD_DATA.browserName());
         driverSupplier = new DriverManager(driverFactory, decorators);
-        /*
-        example of using stupid Decorator
-         */
-        /*
-        Decorator <WebDriver> windowMaximizer = driver -> {
-            driver.manage().window().maximize();
-            return driver;
-        };
-        StupidDecoratorPipeline<WebDriver> decorators = new StupidDecoratorPipeline<>(windowMaximizer);
-        decorators.addDecorator(new EventFiringDecorator(new WebDriverListenerLocal()).decorate(driver));
-        Supplier<WebDriver> driverFactory = DriverFactory.selectDriverSupplier(PROD_DATA.browserName());
-        driverSupplier = new DriverManager(driverFactory, decorators);
-        */
+
     }
 
     @AfterMethod(alwaysRun = true)
