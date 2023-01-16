@@ -48,7 +48,7 @@ public class BaseTest {
             return driver;
         };
         StupidDecoratorPipeline<WebDriver> decorators = new StupidDecoratorPipeline<>(windowMaximizer);
-        decorators.apply(new EventFiringDecorator(new WebDriverListenerLocal()).decorate(driver));
+        decorators.addDecorator(new EventFiringDecorator(new WebDriverListenerLocal()).decorate(driver));
         Supplier<WebDriver> driverFactory = DriverFactory.selectDriverSupplier(PROD_DATA.browserName());
         driverSupplier = new DriverManager(driverFactory, decorators);
         */

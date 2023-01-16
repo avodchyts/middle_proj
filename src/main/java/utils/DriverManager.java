@@ -29,7 +29,7 @@ public class DriverManager implements Supplier<WebDriver> {
             this.driver = driverSupplier.get();
             Runtime current = Runtime.getRuntime();
             current.addShutdownHook(new DriverHook(driver));
-            driver = decorators.execute(driver);
+            driver = decorators.apply(driver);
         }
          */
         return driver;

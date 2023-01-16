@@ -15,8 +15,4 @@ public class StupidDecoratorPipeline<T> implements Decorator<T> {
     public final DecoratorPipeline<T> addDecorator(Decorator<T> nextDecorator) {
         return new DecoratorPipeline<T>((T input) -> nextDecorator.apply(apply(input)));
     }
-
-    public T execute(T input) {
-        return decorator.apply(input);
-    }
 }
