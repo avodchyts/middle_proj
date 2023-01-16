@@ -8,6 +8,7 @@ import org.testng.annotations.BeforeMethod;
 import utils.*;
 
 import java.util.function.Supplier;
+import java.util.function.UnaryOperator;
 
 import static java.util.Objects.isNull;
 
@@ -16,7 +17,7 @@ public class BaseTest {
     private Supplier<WebDriver> driverSupplier;
     public static final TestConfig PROD_DATA = ConfigFactory.create(TestConfig.class);
     protected static final String URL = PROD_DATA.baseUrl();
-
+    protected WebDriver driver;
     static {
         System.setProperty(PROD_DATA.browserSystKey(), PROD_DATA.driverPath());
     }
@@ -25,8 +26,8 @@ public class BaseTest {
         if (isNull(driverSupplier)) {
             throw new IllegalStateException("Driver source is not set!");
         }
-        return driverSupplier.get();
-    }
+       return driver;
+     }
 
     @BeforeMethod(alwaysRun = true)
     public void setDriver() {
@@ -34,14 +35,14 @@ public class BaseTest {
             driver.manage().window().maximize();
             return driver;
         };
+
         DecoratorPipeline<WebDriver> decorators = new DecoratorPipeline<>(windowMaximizer)
                 .addDecorator(new EventFiringDecorator<>(new WebDriverLogger())::decorate)
                 .addDecorator(new ScreenshotTakerDecorator()::decorate);
         Supplier<WebDriver> driverFactory = DriverFactory.selectDriverSupplier(PROD_DATA.browserName());
         driverSupplier = new DriverManager(driverFactory, decorators);
     }
-
-    @AfterMethod(alwaysRun = true)
+        @AfterMethod(alwaysRun = true)
     public void quitDriver() {
         getDriver().quit();
     }
