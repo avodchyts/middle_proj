@@ -12,7 +12,6 @@ import static io.restassured.RestAssured.given;
 
 public class ApiTest extends BaseTest{
     private static final Logger LOGGER = Logger.getLogger(ApiTest.class);
-    private final String URL = getBaseUrl();
 
     @Test(description = "API links checking")
     public void allLinksCheckTests() {
