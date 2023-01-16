@@ -2,7 +2,7 @@ package utils;
 
 import java.util.function.UnaryOperator;
 
-public class DecoratorPipeline<T> implements UnaryOperator<T> {
+public class DecoratorPipeline<T> implements Decorator<T> {
     private final UnaryOperator<T> decorator;
 
     public DecoratorPipeline(UnaryOperator<T> decorator) {

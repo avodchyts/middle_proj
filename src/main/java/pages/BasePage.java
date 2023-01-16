@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class BasePage {
-    protected WebDriver driver;
+    public static WebDriver driver;
     protected BasePage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);

@@ -4,7 +4,7 @@ import org.apache.commons.io.FileUtils;
 import org.apache.log4j.Logger;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.events.WebDriverListener;
-import org.testng.internal.BaseTestMethod;
+import pages.BasePage;
 
 import java.io.File;
 import java.io.IOException;
@@ -13,8 +13,8 @@ import java.lang.reflect.Method;
 
 import static java.lang.String.format;
 
-public class WebDriverListenerLocal implements WebDriverListener {
-    private static final Logger LOGGER = Logger.getLogger(WebDriverListenerLocal.class);
+public class WebDriverLogger implements WebDriverListener {
+    private static final Logger LOGGER = Logger.getLogger(WebDriverLogger.class);
 
     @Override
     public void beforeGet(WebDriver driver, String url) {
@@ -41,6 +41,7 @@ public class WebDriverListenerLocal implements WebDriverListener {
         LOGGER.info(format("Method %S was failed", method.getName()));
         LOGGER.info(format("Exception: %s", e.getMessage()));
         LOGGER.error(e);
+        takesScreenshot();
     }
 
     @Override
@@ -48,14 +49,15 @@ public class WebDriverListenerLocal implements WebDriverListener {
         LOGGER.info(format("Driver [%s] was quited", driver.getTitle()));
     }
 
-    private void takesScreenshot(WebDriver  driver) {
-        File screnshot = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+    private void takesScreenshot() {
+        File screnshot = ((TakesScreenshot) BasePage.driver).getScreenshotAs(OutputType.FILE);
         File screnshotFolder = new File(System.getProperty("user.dir"), "screenshots");
         screnshotFolder.mkdir();
         try {
             FileUtils.copyFile(screnshot, new File(screnshotFolder, System.currentTimeMillis() + ".png"));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            LOGGER.error(e.getMessage());
+            throw new ListenerException("Failed to save screenshots", e);
         }
     }
 }
