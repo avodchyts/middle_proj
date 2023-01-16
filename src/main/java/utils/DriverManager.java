@@ -20,7 +20,7 @@ public class DriverManager implements Supplier<WebDriver> {
             this.driver = driverSupplier.get();
             Runtime current = Runtime.getRuntime();
             current.addShutdownHook(new DriverHook(driver));
-            driver = decorators.apply(driver);
+            driver = decorators.decorate(driver);
         }
         return driver;
     }
