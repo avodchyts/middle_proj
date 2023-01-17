@@ -12,8 +12,9 @@ public class DriverManager implements Supplier<WebDriver> {
 
     public DriverManager(Supplier<WebDriver> driverSupplier, DecoratorPipeline<WebDriver> decorators) {
         this.driverSupplier = driverSupplier;
-        this.decorators= decorators;
+        this.decorators = decorators;
     }
+
     public WebDriver get() {
         if (Objects.isNull(this.driver)) {
             this.driver = driverSupplier.get();
