@@ -16,12 +16,13 @@ public class DriverHook extends Thread {
         this.driver = driver;
     }
 
-    public void driverClose() {
+    @Override
+    public void run() {
         if (Objects.nonNull(driver)) {
             try {
                 driver.quit();
             } catch (Exception e) {
-                LOGGER.info(format("Problem with closing driver: %s", e.getMessage()));
+                LOGGER.warn(format("Problem with closing driver: %s", e.getMessage()));
             }
         }
     }

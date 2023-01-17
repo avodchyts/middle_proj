@@ -1,4 +1,3 @@
-
 import config.TestConfig;
 import org.aeonbits.owner.ConfigFactory;
 import org.apache.log4j.Logger;
@@ -8,8 +7,9 @@ import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
 import utils.*;
 
-import java.util.Objects;
 import java.util.function.Supplier;
+
+import static java.util.Objects.isNull;
 
 public class BaseTest {
     private static final Logger LOGGER = Logger.getLogger(BaseTest.class);
@@ -22,7 +22,7 @@ public class BaseTest {
     }
 
     protected final WebDriver getDriver() {
-        if (Objects.isNull(driverSupplier)) {
+        if (isNull(driverSupplier)) {
             throw new IllegalStateException("Driver source is not set!");
         }
         return driverSupplier.get();
@@ -34,8 +34,9 @@ public class BaseTest {
             driver.manage().window().maximize();
             return driver;
         };
-        DecoratorPipeline<WebDriver> decorators = new DecoratorPipeline<>(windowMaximizer);
-        decorators.addDecorator((Decorator<WebDriver>) new EventFiringDecorator(new WebDriverLogger()));
+        DecoratorPipeline<WebDriver> decorators = new DecoratorPipeline<>(windowMaximizer)
+                .addDecorator(new EventFiringDecorator<>(new WebDriverLogger())::decorate)
+                .addDecorator(new ScreenshotTakerDecorator()::decorate);
         Supplier<WebDriver> driverFactory = DriverFactory.selectDriverSupplier(PROD_DATA.browserName());
         driverSupplier = new DriverManager(driverFactory, decorators);
     }

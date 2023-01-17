@@ -3,7 +3,7 @@
 <!--suite name="Nutanix Navigation" parallel="tests" thread-count="2"-->
     <suite name="Nutanix Navigation" >
     <listeners>
-        <listener class-name="utils.ListenerTest"></listener>
+        <listener class-name="utils.TestListener"/>
     </listeners>
     <parameter name="reporting.notification.emails" value="vodchyts.alex@gmail.com"/>
 
