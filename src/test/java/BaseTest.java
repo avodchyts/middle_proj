@@ -61,7 +61,6 @@ public class BaseTest {
                 Optional.empty(),
                 Optional.empty()));
     }
-
         @AfterMethod(alwaysRun = true)
     public void quitDriver() {
         getDriver().quit();

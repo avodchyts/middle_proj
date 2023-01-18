@@ -1,7 +1,6 @@
 package utils;
 public class DecoratorPipeline<T> implements Decorator<T> {
     private final Decorator<T> decorator;
-
     public DecoratorPipeline(Decorator<T> decorator) {
         this.decorator = decorator;
     }
