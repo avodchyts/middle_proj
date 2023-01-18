@@ -15,16 +15,10 @@ public enum LangValue {
     CHINES_TRAD("台灣 (繁體中文)","tw"),
     INDIAN("India","in"),
     ASIA_PACIFIC_ENGLISH("Asia Pacific (English)","sg");
-    public String languageValue;
-    public String langMeaning;
-    private LangValue(String languageValue, String langMeaning) {
+    public final String languageValue;
+    public final String langMeaning;
+    LangValue(String languageValue, String langMeaning) {
         this.languageValue = languageValue;
         this.langMeaning = langMeaning;
-    }
-    public String getLanguageValue() {
-        return languageValue;
-    }
-    public String getLangMeaning() {
-        return langMeaning;
     }
 }

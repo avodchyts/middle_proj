@@ -1,19 +1,15 @@
 package utils;
-
-import java.util.function.UnaryOperator;
-
-public class DecoratorPipeline<T> implements UnaryOperator<T> {
-    private final UnaryOperator<T> decorator;
-
-    public DecoratorPipeline(UnaryOperator<T> decorator) {
+public class DecoratorPipeline<T> implements Decorator<T> {
+    private final Decorator<T> decorator;
+    public DecoratorPipeline(Decorator<T> decorator) {
         this.decorator = decorator;
     }
 
     @Override
-    public T apply(T driver){
-        return decorator.apply(driver);
+    public T decorate(T driver){
+        return decorator.decorate(driver);
     }
-    public final DecoratorPipeline<T> addDecorator(UnaryOperator<T> nextDecorator) {
-        return new DecoratorPipeline<T>((T input) -> nextDecorator.apply(apply(input)));
+    public final DecoratorPipeline<T> addDecorator(Decorator<T> nextDecorator) {
+        return new DecoratorPipeline<>((T input) -> nextDecorator.decorate(decorate(input)));
     }
 }

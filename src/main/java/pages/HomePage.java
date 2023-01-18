@@ -5,7 +5,6 @@ import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
-import utils.EnvironmentsValue;
 
 import java.time.Duration;
 import java.util.List;
@@ -31,7 +30,6 @@ public class HomePage extends BasePage {
         driver.navigate().to(url);
         return this;
     }
-
     public List<String> getLinks() {
         return getSortByHrefAndNullCheckList(linksList);
     }
