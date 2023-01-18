@@ -6,6 +6,7 @@ import org.aeonbits.owner.Config;
         "system:properties",
         "classpath:env.${env.name}.properties",
         "classpath:${browser.name}.browser.properties",
+        "classpath:data.properties"
 })
 public interface TestConfig extends Config {
     @Key("base.url")
@@ -18,4 +19,6 @@ public interface TestConfig extends Config {
     String driverPath();
     @Key("env.name")
     String environmentName();
+    @Key("mobileDevice")
+    String deviceName();
 }

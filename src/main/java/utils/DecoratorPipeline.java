@@ -1,5 +1,4 @@
 package utils;
-
 public class DecoratorPipeline<T> implements Decorator<T> {
     private final Decorator<T> decorator;
 
