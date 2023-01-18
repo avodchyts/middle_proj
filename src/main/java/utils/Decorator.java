@@ -1,6 +1,5 @@
 package utils;
 
-import java.util.function.UnaryOperator;
-
-public interface Decorator<T> extends UnaryOperator<T> {
+public interface Decorator<T> {
+    public T decorate(T input);
 }

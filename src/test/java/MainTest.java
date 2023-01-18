@@ -20,9 +20,7 @@ import static io.restassured.RestAssured.given;
 public class MainTest extends BaseTest {
     private static final Logger LOGGER = Logger.getLogger(MainTest.class);
     private static final Pattern contentPattern = Pattern.compile("/content/nutanix/");
-    private static String langVal;
-    private static String patternValue = ".com/" + langVal;
-    private static final Pattern linkStructPattern = Pattern.compile(patternValue);
+
     @Test(description = "Check languages links", enabled = true)
     public void languagesLinksTest() {
         SoftAssert softAssert = new SoftAssert();
