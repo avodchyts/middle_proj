@@ -10,23 +10,26 @@ import java.time.Duration;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class BasePage {
+public abstract class BasePage {
     protected final WebDriver driver;
+
     protected BasePage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
-    protected static WebElement waitForVisibilityOfElement(WebDriver driver, Duration timeOutSeconds, WebElement webElement) {
+
+    protected WebElement waitForVisibilityOfElement(WebDriver driver, Duration timeOutSeconds, WebElement webElement) {
         return new WebDriverWait(driver, timeOutSeconds).until(ExpectedConditions.visibilityOf(webElement));
     }
-    protected static List<String> getSortByHrefAndNullCheckList(List<WebElement> webElements) {
+
+    protected List<String> getSortByHrefAndNullCheckList(List<WebElement> webElements) {
         return webElements.stream()
                 .filter(x -> x.getAttribute("href") != null)
                 .map(o -> o.getAttribute("href"))
                 .collect(Collectors.toList());
     }
 
-    protected static List<String> getSortByHrefList(List<WebElement> webElements) {
+    protected List<String> getSortByHrefList(List<WebElement> webElements) {
         return webElements.stream()
                 .map(o -> o.getAttribute("href"))
                 .collect(Collectors.toList());
