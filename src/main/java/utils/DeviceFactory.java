@@ -12,12 +12,11 @@ import static java.lang.String.format;
 
 public enum DeviceFactory implements Device {
     IPHONE_11_PRO("375", "812", "true", "50");
-    public String deviceWidth;
-    public String deviceHeight;
-    public String deviceScale;
-    public String mobileDevice;
-    public Map<String, String> deviceMetrics;
-    private static String device;
+    private final String deviceWidth;
+    private final String deviceHeight;
+    private final String deviceScale;
+    private final String mobileDevice;
+    private final Map<String, String> deviceMetrics;
 
     private DeviceFactory(String deviceWidth, String deviceHeight, String mobileDevice, String deviceScale) {
         this.deviceWidth = deviceWidth;
@@ -25,12 +24,15 @@ public enum DeviceFactory implements Device {
         this.deviceScale = deviceScale;
         this.mobileDevice = mobileDevice;
         this.deviceMetrics = new HashMap<>();
+        deviceMetrics.put("width", deviceWidth);
+        deviceMetrics.put("height", deviceHeight);
+        deviceMetrics.put("scale", deviceScale);
+        deviceMetrics.put("mobile", mobileDevice);
     }
 
     private static final Logger LOGGER = Logger.getLogger(DeviceFactory.class);
 
     public static DeviceFactory selectDeviceByName(String deviceName) {
-        device = deviceName;
         try {
             return Objects.requireNonNull(
                     EnumUtils.getEnum(DeviceFactory.class, deviceName.toUpperCase())
@@ -44,10 +46,6 @@ public enum DeviceFactory implements Device {
 
     @Override
     public Map<String, String> getDeviceMetrics() {
-        deviceMetrics.put("width", deviceWidth);
-        deviceMetrics.put("height", deviceHeight);
-        deviceMetrics.put("scale", deviceScale);
-        deviceMetrics.put("mobile", mobileDevice);
         return deviceMetrics;
     }
 }

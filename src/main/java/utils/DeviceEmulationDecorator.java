@@ -20,9 +20,8 @@ public class DeviceEmulationDecorator implements Decorator<WebDriver>{
     @Override
     public WebDriver decorate(WebDriver driver) {
         if (driver instanceof HasDevTools) {
-            Map<String, Object> deviceMetrics = Collections.<String, Object>unmodifiableMap(device.getDeviceMetrics());
             HasCdp cdpExecutor = (HasCdp) driver;
-            cdpExecutor.executeCdpCommand("Emulation.setDeviceMetricsOverride", deviceMetrics);
+            cdpExecutor.executeCdpCommand("Emulation.setDeviceMetricsOverride", Collections.<String, Object>unmodifiableMap(device.getDeviceMetrics()));
             return driver;
         }
         throw new IllegalArgumentException("Driver does not support DevTools");

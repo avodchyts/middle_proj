@@ -12,17 +12,16 @@ import java.util.stream.Collectors;
 
 public abstract class BasePage {
     protected final WebDriver driver;
-
-    protected BasePage(WebDriver driver) {
+    public BasePage(WebDriver driver) {
         this.driver = driver;
         PageFactory.initElements(driver, this);
     }
 
-    protected WebElement waitForVisibilityOfElement(WebDriver driver, Duration timeOutSeconds, WebElement webElement) {
+    public WebElement waitForVisibilityOfElement(WebDriver driver, Duration timeOutSeconds, WebElement webElement) {
         return new WebDriverWait(driver, timeOutSeconds).until(ExpectedConditions.visibilityOf(webElement));
     }
 
-    protected List<String> getSortByHrefAndNullCheckList(List<WebElement> webElements) {
+    public List<String> getSortByHrefAndNullCheckList(List<WebElement> webElements) {
         return webElements.stream()
                 .filter(x -> x.getAttribute("href") != null)
                 .map(o -> o.getAttribute("href"))
@@ -34,4 +33,5 @@ public abstract class BasePage {
                 .map(o -> o.getAttribute("href"))
                 .collect(Collectors.toList());
     }
+
 }

@@ -27,7 +27,7 @@ public class ScreenshotTakerDecorator extends WebDriverDecorator<WebDriver> {
         if (original instanceof TakesScreenshot) {
             TakesScreenshot takesScreenshot = (TakesScreenshot) original;
             File screenshot = takesScreenshot.getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(screenshot, new File(format("target/screenshot/%s_%s.png", method.getName(), LocalDateTime.now())));
+            FileUtils.copyFile(screenshot, new File(format("target/screenshot_%s_%s.png", method.getName(), LocalDateTime.now())));
         }
         throw e.getTargetException();
     }
