@@ -24,14 +24,14 @@ public class NavigationHeaderUtilityPage extends BasePage {
     }
 
     public List<String> getUtilityLinks() {
-        return getSortByHrefList(utilityLinks);
+        return mainFunctional.getSortByHrefList(utilityLinks);
     }
     public String getLoginLink() {
         return loginLink.getAttribute("href");
     }
 
     public List<String> getLanguagesLinks() {
-        return getSortByHrefList(languagesList);
+        return mainFunctional.getSortByHrefList(languagesList);
     }
     public Map<String, String> getLanguagesMap() {
         return languagesList.stream().collect(Collectors.toMap(o -> o.getAttribute("text"), b -> b.getAttribute("href")));
