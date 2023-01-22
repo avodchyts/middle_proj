@@ -27,11 +27,6 @@ public class LanguageChooser extends BasePage {
         super(searchContext);
     }
 
-    @Override
-    public SearchContext get() {
-        return languagesDropdown;
-    }
-
     public void open() {
         languageButton.click();
         new FluentWait<>(languagesDropdown).withTimeout(Duration.ofMillis(3000)).until(WebElement::isDisplayed);

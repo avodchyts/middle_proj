@@ -10,7 +10,8 @@ public class NavigationUtilityHeader extends BasePage {
     @FindBy(className = "global-header__utility")
     private WebElement utilityHeader;
 
-    private HasLinks utilityHeaderLinks = () -> utilityHeader;
+    private final HasLinks utilityHeaderLinks = () -> utilityHeader;
+
     public NavigationUtilityHeader(WebDriver driver) {
         super(driver);
     }
