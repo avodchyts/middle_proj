@@ -1,0 +1,29 @@
+package data;
+
+import org.testng.annotations.DataProvider;
+import utils.LangValue;
+import utils.UrlTemplate;
+
+import java.util.Arrays;
+import java.util.Iterator;
+
+public class LanguageUrlDataProvider {
+
+    @DataProvider
+    public static Object[][] languageUrls() {
+        return new Object[][]{{
+                Arrays.stream(LangValue.values())
+                        .map(langValue -> new LanguageUrlDto(langValue.name, UrlTemplate.getUrl(langValue.code)))
+                        .toList()
+        }};
+    }
+
+    @DataProvider
+    public static Iterator<Object[]> languageUrl() {
+        return Arrays.stream(LangValue.values())
+                        .map(langValue -> new LanguageUrlDto(langValue.name, UrlTemplate.getUrl(langValue.code)))
+                        .map(o -> new Object[] { o })
+                        .iterator();
+    }
+
+}
