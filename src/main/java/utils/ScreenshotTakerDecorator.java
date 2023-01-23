@@ -10,6 +10,10 @@ import org.openqa.selenium.support.decorators.WebDriverDecorator;
 import java.io.File;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.Time;
+import java.time.LocalDateTime;
+
+import static java.lang.String.format;
 
 public class ScreenshotTakerDecorator extends WebDriverDecorator<WebDriver> {
 
@@ -23,7 +27,7 @@ public class ScreenshotTakerDecorator extends WebDriverDecorator<WebDriver> {
         if (original instanceof TakesScreenshot) {
             TakesScreenshot takesScreenshot = (TakesScreenshot) original;
             File screenshot = takesScreenshot.getScreenshotAs(OutputType.FILE);
-            FileUtils.copyFile(screenshot, new File("target/screenshot.png"));
+            FileUtils.copyFile(screenshot, new File(format("target/screenshot/%s_%s.png", method.getName(), LocalDateTime.now())));
         }
         throw e.getTargetException();
     }

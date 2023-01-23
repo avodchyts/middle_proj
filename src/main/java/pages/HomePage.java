@@ -30,7 +30,6 @@ public class HomePage extends BasePage {
         driver.navigate().to(url);
         return this;
     }
-
     public List<String> getLinks() {
         return getSortByHrefAndNullCheckList(linksList);
     }
