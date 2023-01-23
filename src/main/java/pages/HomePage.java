@@ -31,17 +31,17 @@ public class HomePage extends BasePage {
         return this;
     }
     public List<String> getLinks() {
-        return getSortByHrefAndNullCheckList(linksList);
+        return mainFunctional.getSortByHrefAndNullCheckList(linksList);
     }
     public String getLanguageText() {
-        return waitForVisibilityOfElement(driver, Duration.ofSeconds(3), languageButton).getText();
+        return mainFunctional.waitForVisibilityOfElement(driver, Duration.ofSeconds(3), languageButton).getText();
     }
     public void setLanguage(String languageValue) {
         if (isLanguageSelected(languageValue)) {
             LOGGER.info(format("%s is already selected", languageValue));
             return;
         }
-        waitForVisibilityOfElement(driver, Duration.ofSeconds(3), languageButton).click();
+        mainFunctional.waitForVisibilityOfElement(driver, Duration.ofSeconds(3), languageButton).click();
         WebElement languageOption = driver.findElement(By.xpath(format(LANG_OPTION, languageValue)));
         driver.manage().timeouts().implicitlyWait(Duration.ofMillis(3000));
         languageOption.click();
