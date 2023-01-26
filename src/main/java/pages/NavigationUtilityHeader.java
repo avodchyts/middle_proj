@@ -15,7 +15,6 @@ public class NavigationUtilityHeader extends BasePage {
     public NavigationUtilityHeader(WebDriver driver) {
         super(driver);
     }
-
     public List<String> getUtilityHeaderLinks() {
         return utilityHeaderLinks.getLinkUrls();
     }
