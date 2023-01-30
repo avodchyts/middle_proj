@@ -87,10 +87,7 @@ public class MainNavigationHeader extends BasePage {
         WebDriver localDriver = (WebDriver) searchContext;
         Actions actions = new Actions(localDriver);
         WebElement tabNameButton = searchContext.findElement(By.xpath(String.format(tabNameText, name)));
-        IntStream.range(0, 4).forEach(i -> {
-                    actions.moveToElement(tabNameButton, 10, 10).perform();
-                    actions.moveToElement(tabNameButton).perform();
-                }
-        );
+        actions.moveToElement(mainNavigation).perform();
+        actions.moveToElement(tabNameButton).perform();
     }
 }
