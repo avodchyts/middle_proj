@@ -5,7 +5,9 @@ import groovy.lang.IntRange;
 import org.openqa.selenium.*;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.time.Duration;
 import java.util.List;
@@ -13,8 +15,9 @@ import java.util.function.IntConsumer;
 import java.util.stream.IntStream;
 
 public class MainNavigationHeader extends BasePage {
-   private final String tabNameText = "//li[a[contains(@data-target,'%s')]]";
-    @FindBy(className = "main-navigation")
+  // private final String tabNameText = "//li[a[contains(@data-target,'%s')]]";
+   private final String tabNameText = "//a[contains(text(),'%s')]";
+    @FindBy(className = "main-navigation-wrapper")
     private WebElement mainNavigation;
 
     @FindBy(xpath = "//section[@class='flyout']")
@@ -32,7 +35,7 @@ public class MainNavigationHeader extends BasePage {
 
         @Override
         public List<WebElement> getLinkElements() {
-            return mainNavigation.findElements(By.xpath("//nav[@class='main-navigation']/ul/li/a"));
+            return mainNavigation.findElements(By.xpath(".//nav[@class='main-navigation']/ul/li/a"));
         }
     };
 
@@ -81,11 +84,12 @@ public class MainNavigationHeader extends BasePage {
     }
 
     private void tabMouseHoverAction(String name) {
-        Actions actions = new Actions((WebDriver) searchContext);
+        WebDriver localDriver = (WebDriver) searchContext;
+        Actions actions = new Actions(localDriver);
         WebElement tabNameButton = searchContext.findElement(By.xpath(String.format(tabNameText, name)));
         IntStream.range(0, 4).forEach(i -> {
-                    new FluentWait<>(tabNameButton).withTimeout(Duration.ofMillis(3000)).until(WebElement::isDisplayed);
                     actions.moveToElement(tabNameButton, 10, 10).perform();
+                    actions.moveToElement(tabNameButton).perform();
                 }
         );
     }

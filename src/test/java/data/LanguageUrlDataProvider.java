@@ -26,4 +26,20 @@ public class LanguageUrlDataProvider {
                         .iterator();
     }
 
+    @DataProvider
+    public static Iterator<Object[]> filteredLanguageUrl() {
+        return Arrays.stream(LangValue.values()).filter(n -> !n.equals(LangValue.ENGLISH) || !n.equals(LangValue.CHINESE) || !n.equals(LangValue.INDIAN))
+                .map(langValue -> new ExtendLanguageUrlDto(langValue.name, langValue.code, UrlTemplate.getUrl(langValue.code)))
+                .map(o -> new Object[]{o})
+                .iterator();
+    }
+
+    @DataProvider
+    public static Iterator<Object[]> engChinesLanguageUrl() {
+        return Arrays.stream(LangValue.values()).filter(n -> n.equals(LangValue.ENGLISH) || n.equals(LangValue.CHINESE))
+                .map(langValue -> new ExtendLanguageUrlDto(langValue.name, langValue.code, UrlTemplate.getUrl(langValue.code)))
+                .map(o -> new Object[]{o})
+                .iterator();
+    }
+
 }

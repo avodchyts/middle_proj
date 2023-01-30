@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 public enum UrlTemplate {
     INDIA("in", "http://www.nutanix.in/"),
     CHINA("cn", "https://www.nutanix.cn/"),
-    UNITED_STATES("us", "https://www.nutanix.com"),
+    UNITED_STATES("com", "https://www.nutanix.com"),
     ;
 
 

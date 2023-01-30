@@ -1,7 +1,7 @@
 package utils;
 
 public enum LangValue {
-    ENGLISH("United States (English)", "us"),
+    ENGLISH("United States (English)", "com"),
     DEUTSCH("Deutschland (Deutsch)", "de"),
     FRENCH("France (Français)", "fr"),
     SPANISH("España (Español)", "es"),

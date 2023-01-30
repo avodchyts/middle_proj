@@ -17,6 +17,7 @@ import static io.restassured.RestAssured.given;
 public class LanguageChooserTest extends BaseTest {
     private static final Logger LOGGER = Logger.getLogger(LanguageChooserTest.class);
     private static final Pattern contentPattern = Pattern.compile("/content/nutanix/");
+
     @Test(dataProvider = "languageUrls", dataProviderClass = LanguageUrlDataProvider.class)
     public void testLanguagesList(List<LanguageUrlDto> languageLinks) {
         getDriver().get(URL);
@@ -24,7 +25,7 @@ public class LanguageChooserTest extends BaseTest {
         String selectedLanguage = languageChooser.getSelectedLanguageText();
         List<LanguageUrlDto> expectedLanguages = languageLinks
                 .stream()
-                .filter(language -> ! language.name().equals(selectedLanguage))
+                .filter(language -> !language.name().equals(selectedLanguage))
                 .toList();
         languageChooser.open();
         List<LanguageUrlDto> languages = languageChooser
@@ -38,8 +39,8 @@ public class LanguageChooserTest extends BaseTest {
     }
 
     @Test
-    public void testApiContentLanguagesLink() {
-        getDriver().get(UrlTemplate.getUrl("us"));
+    public void testApiLanguagesLink() {
+        getDriver().get(URL);
         LanguageChooser languageChooser = new LanguageChooser(getDriver());
         languageChooser.open();
         List<LanguageUrlDto> languages = languageChooser
@@ -51,6 +52,23 @@ public class LanguageChooserTest extends BaseTest {
         SoftAssertions.assertSoftly(softAssertions -> {
             for (LanguageUrlDto language : languages) {
                 linkAPIChecks(softAssertions, language.url());
+            }
+        });
+    }
+
+    @Test
+    public void testContentLanguagesLink() {
+        getDriver().get(URL);
+        LanguageChooser languageChooser = new LanguageChooser(getDriver());
+        languageChooser.open();
+        List<LanguageUrlDto> languages = languageChooser
+                .getLanguagesMap()
+                .entrySet()
+                .stream()
+                .map(entry -> new LanguageUrlDto(entry.getKey(), entry.getValue()))
+                .toList();
+        SoftAssertions.assertSoftly(softAssertions -> {
+            for (LanguageUrlDto language : languages) {
                 linkContentChecks(softAssertions, language.url());
             }
         });
@@ -63,6 +81,7 @@ public class LanguageChooserTest extends BaseTest {
         Matcher matcherApi = patternApi.matcher(validatableResponse.extract().statusLine());
         softAssert.assertThat(matcherApi.find()).isFalse();
     }
+
     private void linkContentChecks(SoftAssertions softAssert, String link) {
         LOGGER.info(String.format("Content checking link: %s", link));
         Matcher contextMatcher = contentPattern.matcher(link);
