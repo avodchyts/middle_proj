@@ -6,7 +6,7 @@ import org.openqa.selenium.WebElement;
 
 import java.util.function.Supplier;
 
-public interface HasLink extends Supplier<SearchContext> {
+public interface HasLink<T extends SearchContext> extends Supplier<T> {
     default WebElement getLinkElement() {
         return get().findElement(By.xpath("//a/@href"));
     }

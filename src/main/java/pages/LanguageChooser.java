@@ -2,7 +2,7 @@ package pages;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
-import org.openqa.selenium.SearchContext;
+import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.FluentWait;
@@ -21,10 +21,10 @@ public class LanguageChooser extends BasePage {
     @FindBy(id ="language")
     private WebElement languagesDropdown;
 
-    private final HasLinks languagesList = () -> languagesDropdown;
+    private final HasLinks<WebElement> languagesList = () -> languagesDropdown;
 
-    public LanguageChooser(SearchContext searchContext) {
-        super(searchContext);
+    public LanguageChooser(WebDriver webDriver) {
+        super(webDriver);
     }
 
     public void open() {
