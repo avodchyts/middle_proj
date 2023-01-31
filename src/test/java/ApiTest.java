@@ -19,9 +19,9 @@ public class ApiTest extends BaseTest{
         Pattern pattern = Pattern.compile("4\\d{2}");
 
         HomePage homePage = new HomePage(getDriver());
-        homePage.openHomePage(URL);
+        getDriver().get(URL);
 
-        List<String> links = homePage.getLinks();
+        List<String> links = homePage.getLinkUrls();
         for (int i = 0; i < links.size(); i++) {
             String url = links.get(i);
             if (url.contains("www.nutanix.in"))
