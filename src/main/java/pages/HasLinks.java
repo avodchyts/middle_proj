@@ -9,7 +9,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
-public interface HasLinks extends Supplier<SearchContext> {
+public interface HasLinks<T extends SearchContext> extends Supplier<T> {
 
     default List<WebElement> getLinkElements() {
         return get().findElements(By.tagName("a"));
