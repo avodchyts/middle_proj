@@ -1,4 +1,4 @@
-package utils;
+package fixtures;
 
 import config.TestConfig;
 import org.aeonbits.owner.ConfigFactory;

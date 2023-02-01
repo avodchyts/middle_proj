@@ -1,12 +1,14 @@
+import data.ExtendLanguageUrlDto;
 import data.LanguageUrlDataProvider;
 import data.LanguageUrlDto;
+import fixtures.LangValue;
+import fixtures.UrlTemplate;
 import io.restassured.response.ValidatableResponse;
 import org.apache.log4j.Logger;
 import org.assertj.core.api.SoftAssertions;
 import org.testng.annotations.Test;
-import pages.NavigationUtilityHeader;
-import utils.LangValue;
-import utils.UrlTemplate;
+
+import ui.pages.NavigationUtilityHeader;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -21,47 +23,51 @@ public class NavigationUtilityHeaderTest extends BaseTest {
     static String patternValue = String.format(".com/%s", patternVariable);
     private static final Pattern shortDescriptionPattern = Pattern.compile(patternValue);
 
-    @Test(dataProvider = "languageUrl", dataProviderClass = LanguageUrlDataProvider.class)
-    public void testApiContentNavigationUtilityHeaderLinks(LanguageUrlDto languageUrlDto) {
+    @Test(dataProvider = "filteredLanguageUrl", dataProviderClass = LanguageUrlDataProvider.class)
+    public void testApiNavigationUtilityHeaderLinks(ExtendLanguageUrlDto languageUrlDto) {
         getDriver().get(languageUrlDto.url());
         NavigationUtilityHeader navigationUtilityHeader = new NavigationUtilityHeader(getDriver());
         SoftAssertions.assertSoftly(softAssertions -> {
             for (String link : navigationUtilityHeader.getUtilityHeaderLinks()) {
                 linkAPIChecks(softAssertions, link);
+            }
+        });
+    }
+
+    @Test(dataProvider = "filteredLanguageUrl", dataProviderClass = LanguageUrlDataProvider.class)
+    public void testContentNavigationUtilityHeaderLinks(ExtendLanguageUrlDto languageUrlDto) {
+        getDriver().get(languageUrlDto.url());
+        NavigationUtilityHeader navigationUtilityHeader = new NavigationUtilityHeader(getDriver());
+        SoftAssertions.assertSoftly(softAssertions -> {
+            for (String link : navigationUtilityHeader.getUtilityHeaderLinks()) {
                 linkContentChecks(softAssertions, link);
-                if (languageUrlDto.name().matches("United States (English)|India|中国 (简体中文)"))
-                    continue;
-                patternVariable = LangValue.valueOf(languageUrlDto.name()).code;
+                patternVariable = languageUrlDto.shortDescription();
                 linkShortDescriptionChecks(softAssertions, link);
                 patternVariable = null;
             }
         });
     }
-
-    @Test()
-    public void testEnglishApiContentNavigationUtilityHeaderLinks() {
-        getDriver().get(UrlTemplate.getUrl("us"));
+    @Test(dataProvider = "engChinesLanguageUrl", dataProviderClass = LanguageUrlDataProvider.class)
+    public void testEngChinesApiNavigationUtilityHeaderLinks(LanguageUrlDto languageUrlDto) {
+        getDriver().get(languageUrlDto.url());
         NavigationUtilityHeader navigationUtilityHeader = new NavigationUtilityHeader(getDriver());
         SoftAssertions.assertSoftly(softAssertions -> {
             for (String link : navigationUtilityHeader.getUtilityHeaderLinks()) {
                 linkAPIChecks(softAssertions, link);
-                linkContentChecks(softAssertions, link);
-                patternValue = ".com";
-                linkShortDescriptionChecks(softAssertions, link);
             }
         });
     }
 
-    @Test()
-    public void testChinesApiContentNavigationUtilityHeaderLinks() {
-        getDriver().get(UrlTemplate.getUrl("cn"));
+    @Test(dataProvider = "engChinesLanguageUrl", dataProviderClass = LanguageUrlDataProvider.class)
+    public void testEngChinesContentNavigationUtilityHeaderLinks(ExtendLanguageUrlDto extendLanguageUrlDto) {
+        getDriver().get(extendLanguageUrlDto.url());
         NavigationUtilityHeader navigationUtilityHeader = new NavigationUtilityHeader(getDriver());
         SoftAssertions.assertSoftly(softAssertions -> {
             for (String link : navigationUtilityHeader.getUtilityHeaderLinks()) {
-                linkAPIChecks(softAssertions, link);
                 linkContentChecks(softAssertions, link);
-                patternValue = ".cn";
+                patternValue = String.format(".%s", extendLanguageUrlDto.shortDescription());
                 linkShortDescriptionChecks(softAssertions, link);
+                patternValue = null;
             }
         });
     }

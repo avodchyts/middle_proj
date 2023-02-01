@@ -1,7 +1,9 @@
-package ui.support;
-import support.DeviceFactory;public class DecoratorPipeline<T> implements DeviceFactory.Decorator<T> {
-    private final DeviceFactory.Decorator<T> decorator;
-    public DecoratorPipeline(DeviceFactory.Decorator<T> decorator) {
+package support;
+
+
+public class DecoratorPipeline<T> implements Decorator<T> {
+    private final Decorator<T> decorator;
+    public DecoratorPipeline(Decorator<T> decorator) {
         this.decorator = decorator;
     }
 
@@ -9,7 +11,7 @@ import support.DeviceFactory;public class DecoratorPipeline<T> implements Device
     public T decorate(T driver){
         return decorator.decorate(driver);
     }
-    public final DeviceFactory.DecoratorPipeline<T> addDecorator(DeviceFactory.Decorator<T> nextDecorator) {
-        return new DeviceFactory.DecoratorPipeline<>((T input) -> nextDecorator.decorate(decorate(input)));
+    public final DecoratorPipeline<T> addDecorator(Decorator<T> nextDecorator) {
+        return new DecoratorPipeline<>((T input) -> nextDecorator.decorate(decorate(input)));
     }
 }

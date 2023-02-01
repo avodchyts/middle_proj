@@ -5,7 +5,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.events.EventFiringDecorator;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import utils.*;
+import support.DecoratorPipeline;
+import support.DeviceFactory;
+import ui.support.*;
+import support.Decorator;
 
 import java.util.function.Supplier;
 

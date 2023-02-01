@@ -1,5 +1,4 @@
-package ui.support;
-
+package support;
 
 import org.apache.commons.lang3.EnumUtils;
 import org.apache.log4j.Logger;

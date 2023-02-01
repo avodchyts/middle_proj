@@ -5,9 +5,8 @@ import io.restassured.response.ValidatableResponse;
 import org.apache.log4j.Logger;
 import org.assertj.core.api.SoftAssertions;
 import org.testng.annotations.Test;
-import pages.MainNavigationHeader;
-import utils.LangValue;
-import utils.UrlTemplate;
+import ui.pages.MainNavigationHeader;
+
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

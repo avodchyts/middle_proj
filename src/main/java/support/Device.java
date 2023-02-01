@@ -1,4 +1,4 @@
-package ui.support;
+package support;
 
 import java.util.Map;
 

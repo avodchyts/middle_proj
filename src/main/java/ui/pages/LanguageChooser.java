@@ -1,4 +1,4 @@
-package pages;
+package ui.pages;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.log4j.Logger;
@@ -6,6 +6,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.ui.FluentWait;
+import ui.support.HasLinks;
 
 import java.time.Duration;
 import java.util.Map;

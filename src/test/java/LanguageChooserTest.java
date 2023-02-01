@@ -5,8 +5,7 @@ import org.apache.log4j.Logger;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.testng.annotations.Test;
-import pages.LanguageChooser;
-import utils.UrlTemplate;
+import ui.pages.LanguageChooser;
 
 import java.util.List;
 import java.util.regex.Matcher;

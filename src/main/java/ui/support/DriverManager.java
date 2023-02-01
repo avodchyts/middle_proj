@@ -1,6 +1,7 @@
-package utils;
+package ui.support;
 
 import org.openqa.selenium.WebDriver;
+import support.DecoratorPipeline;
 
 import java.util.Objects;
 import java.util.function.Supplier;
@@ -19,7 +20,7 @@ public class DriverManager implements Supplier<WebDriver> {
         if (Objects.isNull(this.driver)) {
             this.driver = driverSupplier.get();
             Runtime current = Runtime.getRuntime();
-            current.addShutdownHook(new DriverHook(driver));
+            current.addShutdownHook( new DriverHook(driver));
             driver = decorators.decorate(driver);
         }
         return driver;

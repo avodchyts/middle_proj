@@ -1,8 +1,9 @@
-package pages;
+package ui.pages;
 
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
+import ui.support.HasLink;
 
 public class LoginLink extends BasePage {
     @FindBy(css = "span.login-link-ref")
