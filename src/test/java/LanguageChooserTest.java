@@ -5,6 +5,9 @@ import org.apache.log4j.Logger;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.testng.annotations.Test;
+import support.ApiClient;
+import support.RequestDto;
+import support.ResponseDto;
 import ui.pages.LanguageChooser;
 
 import java.util.List;
@@ -76,8 +79,10 @@ public class LanguageChooserTest extends BaseTest {
     private void linkAPIChecks(SoftAssertions softAssert, String link) {
         LOGGER.info(String.format("API checking link: %s", link));
         Pattern patternApi = Pattern.compile("4\\d{2}");
-        ValidatableResponse validatableResponse = given().contentType("application/json").when().get(link).then();
-        Matcher matcherApi = patternApi.matcher(validatableResponse.extract().statusLine());
+        RequestDto requestDto = new RequestDto();
+        requestDto.resourceLink = link;
+        ResponseDto responseDto = ApiClient.DUMMY_OK.apply(requestDto);
+        Matcher matcherApi = patternApi.matcher(responseDto.statusCode);
         softAssert.assertThat(matcherApi.find()).isFalse();
     }
 
