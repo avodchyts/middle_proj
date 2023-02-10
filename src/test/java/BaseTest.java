@@ -16,7 +16,6 @@ import static java.util.Objects.isNull;
 
 public abstract class BaseTest {
     private static final Logger LOGGER = Logger.getLogger(BaseTest.class);
-    private Supplier<WebDriver> driverSupplier;
     private static final TestConfig PROD_DATA = ConfigFactory.create(TestConfig.class);
     protected static final String URL = PROD_DATA.baseUrl();
     protected WebDriver driver;
@@ -24,12 +23,13 @@ public abstract class BaseTest {
     static {
         System.setProperty(PROD_DATA.browserSystKey(), PROD_DATA.driverPath());
     }
+
     public final WebDriver getDriver() {
-        if (isNull(driverSupplier)) {
+        if (isNull(driver)) {
             throw new IllegalStateException("Driver source is not set!");
         }
-       return driverSupplier.get();
-     }
+        return driver;
+    }
 
     @BeforeMethod(alwaysRun = true)
     public void setDriver() {
@@ -41,8 +41,7 @@ public abstract class BaseTest {
                 .addDecorator(new EventFiringDecorator<>(new WebDriverLogger())::decorate)
                 .addDecorator(new ScreenshotTakerDecorator()::decorate)
                 .addDecorator(new DeviceEmulationDecorator(DeviceFactory.selectDeviceByName(PROD_DATA.deviceName()))::decorate);
-        Supplier<WebDriver> driverFactory = DriverFactory.selectDriverSupplier(PROD_DATA.browserName());
-        driverSupplier = new DriverManager(driverFactory, decorators);
+        driver = DriverManager.INSTANCE;
     }
 
     @AfterMethod(alwaysRun = true)

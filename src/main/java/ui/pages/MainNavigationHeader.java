@@ -79,7 +79,6 @@ public class MainNavigationHeader extends BasePage {
 
     private void tabMouseHoverAction(String name) {
         Actions actions = new Actions(webDriver);
-        // private final String tabNameText = "//li[a[contains(@data-target,'%s')]]";
         String tabNameText = "//a[contains(text(),'%s')]";
         WebElement tabNameButton = webDriver.findElement(By.xpath(String.format(tabNameText, name)));
         actions.moveToElement(mainNavigation).perform();
