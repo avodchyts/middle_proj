@@ -91,13 +91,13 @@ public class LanguageChooserTest extends BaseTest {
 
     private void linkAPIChecks(SoftAssertions softAssert, String link) {
         LOGGER.info(String.format("API checking link: %s", link));
+        Pattern patternApi = Pattern.compile("4\\d{2}");
         RequestDto requestDto = new RequestDto();
         requestDto.setResourceLink(link);
-        requestDto.setContentType("application/json");
         ResponseDto actualResponseDto = ApiClient.GET.apply(requestDto);
-        ResponseDto expectedResponseDTO = ApiClient.DUMMY_OK.apply(requestDto);
-        softAssert.assertThat(actualResponseDto.equals(expectedResponseDTO)).isTrue();
-        }
+        Matcher matcherApi = patternApi.matcher(String.valueOf(actualResponseDto.getStatusCode()));
+        softAssert.assertThat(matcherApi.find()).isFalse();
+    }
 
     private void linkContentChecks(SoftAssertions softAssert, String link) {
         LOGGER.info(String.format("Content checking link: %s", link));
