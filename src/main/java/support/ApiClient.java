@@ -5,7 +5,9 @@ import io.restassured.internal.RestAssuredResponseImpl;
 import io.restassured.response.Response;
 import io.restassured.response.ValidatableResponse;
 import org.apache.http.HttpStatus;
+import org.apache.log4j.Logger;
 
+import java.rmi.ServerError;
 import java.util.function.Function;
 
 public enum ApiClient implements Function<RequestDto, ResponseDto> {
@@ -23,9 +25,9 @@ public enum ApiClient implements Function<RequestDto, ResponseDto> {
             }
     ),
     GET(
-            requestDto -> RestAssured.with().contentType(requestDto.getContentType()).get(requestDto.getResourceLink()),
+            requestDto -> RestAssured.with().get(requestDto.getResourceLink()),
             response -> {
-                if (response.statusCode() / 100 != 2) {
+                if (response.statusCode() / 100 == 4) {
                     throw new IllegalArgumentException((String) response.htmlPath().get("html.body"));
                 }
                 return ResponseDto.builder().statusCode(response.statusCode()).statusMessage(response.getStatusLine()).build();
@@ -36,10 +38,16 @@ public enum ApiClient implements Function<RequestDto, ResponseDto> {
         this.requester = requester;
         this.responseProcessor = responseProcessor;
     }
+    private static final Logger LOGGER = Logger.getLogger(ApiClient.class);
 
     @Override
-    public ResponseDto apply(RequestDto request) throws ApiClientError {
-        Response response = requester.apply(request);
-        return responseProcessor.apply(response);
+    public ResponseDto apply(RequestDto request) {
+        try {
+            Response response = requester.apply(request);
+            return responseProcessor.apply(response);
+        } catch (ApiClientError mess) {
+            LOGGER.info(mess.getMessage());
+            throw new RuntimeException(mess.getMessage());
+        }
     }
 }

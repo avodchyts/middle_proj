@@ -10,6 +10,7 @@ import org.openqa.selenium.WebDriver;
 import org.testng.ITestContext;
 import org.testng.ITestListener;
 import org.testng.ITestResult;
+import ui.support.SingletonWebDriver;
 
 import static java.lang.String.format;
 
@@ -37,13 +38,9 @@ public class TestListener implements ITestListener {
     @Override
     public void onTestFailure(ITestResult result) {
         LOGGER.info(format("%S was failed", result.getName()));
-        ITestContext testContext = result.getTestContext();
-        var contextDriver = testContext.getAttribute("driver");
-        if (contextDriver instanceof WebDriver) {
-            saveFailureScreenShot((WebDriver) contextDriver);
-        }
-    }
+        saveFailureScreenShot(SingletonWebDriver.INSTANCE);
 
+    }
     @Attachment
     public byte[] saveFailureScreenShot(WebDriver driver) {
         return ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);

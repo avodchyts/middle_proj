@@ -3,7 +3,6 @@ package ui.support;
 import org.openqa.selenium.WebDriver;
 import support.DecoratorPipeline;
 
-import java.util.Objects;
 import java.util.function.Supplier;
 
 public class DriverManager implements Supplier<WebDriver> {
