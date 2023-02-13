@@ -4,8 +4,8 @@ import org.aeonbits.owner.Config;
 @Config.LoadPolicy(Config.LoadType.MERGE)
 @Config.Sources({
         "system:properties",
-        "classpath:env.prod.properties",
-        "classpath:chrome.browser.properties",
+        "classpath:${env.name}.properties",
+        "classpath:${browser.name}.properties",
         "classpath:data.properties"
 })
 public interface TestConfig extends Config {
