@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class ResponseDto {
+public class ResponseDto implements IResponseDto {
     public int statusCode;
     public String statusMessage;
 }
