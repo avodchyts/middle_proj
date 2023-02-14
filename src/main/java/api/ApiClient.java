@@ -1,34 +1,21 @@
-package support;
+package api;
 
+import api.models.*;
 import io.restassured.RestAssured;
-import io.restassured.internal.RestAssuredResponseImpl;
 import io.restassured.response.Response;
-import org.apache.http.HttpStatus;
 import org.apache.log4j.Logger;
 
 import java.util.function.Function;
 
 public enum ApiClient implements Function<RequestDto, IResponseDto> {
-    DUMMY_OK(
-            request -> new RestAssuredResponseImpl(),
-            response -> ResponseDto.builder()
-                    .statusCode(HttpStatus.SC_OK)
-                    .statusMessage("HTTP/1.1 200 OK")
-                    .build()
-    ),
-    DUMMY_ERROR(
-            request -> new RestAssuredResponseImpl(),
-            response -> {
-                throw new ApiClientError(response);
-            }
-    ),
     GET(
             requestDto -> RestAssured.with().get(requestDto.getResourceLink()),
             response -> {
                 if (response.statusCode() / 100 == 4) {
                     throw new IllegalArgumentException((String) response.htmlPath().get("html.body"));
                 }
-                return ResponseDto.builder().statusCode(response.statusCode()).statusMessage(response.getStatusLine()).build();
+                return ModelFactory.selectResponseDtoType(response, "Response_Dto").get();
+
             }),
     GET_USER_INFO(
             requestDto -> RestAssured.with().get(requestDto.getResourceLink()),
@@ -36,7 +23,7 @@ public enum ApiClient implements Function<RequestDto, IResponseDto> {
                 if (response.statusCode() / 100 == 4) {
                     throw new IllegalArgumentException((String) response.htmlPath().get("html.body"));
                 }
-                return UserDTO.builder().userId(response.jsonPath().getString("userId")).build();
+                return ModelFactory.selectResponseDtoType(response, "User_Dto").get();
             }),
     GET_PARAM(
             requestDto -> RestAssured.with().queryParam("id", requestDto.getId()).get(requestDto.getResourceLink()),
@@ -44,14 +31,16 @@ public enum ApiClient implements Function<RequestDto, IResponseDto> {
                 if (response.statusCode() / 100 == 4) {
                     throw new IllegalArgumentException((String) response.htmlPath().get("html.body"));
                 }
-                return response.as(ParamResponseDto.class);
+                return ModelFactory.selectResponseDtoType(response, "User_Dto").get();
             });
     private final Function<RequestDto, Response> requester;
     private final Function<Response, IResponseDto> responseProcessor;
+
     ApiClient(Function<RequestDto, Response> requester, Function<Response, IResponseDto> responseProcessor) {
         this.requester = requester;
         this.responseProcessor = responseProcessor;
     }
+
     private static final Logger LOGGER = Logger.getLogger(ApiClient.class);
 
     @Override

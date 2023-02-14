@@ -1,4 +1,4 @@
-package support;
+package api.models;
 
 public interface IResponseDto {
 }

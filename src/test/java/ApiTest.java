@@ -1,6 +1,10 @@
+import api.ApiClient;
+import api.models.ParamResponseDto;
+import api.models.RequestDto;
+import api.models.ResponseDto;
+import api.models.UserDTO;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
-import support.*;
 
 public class ApiTest extends BaseTest {
     @Test
@@ -31,7 +35,7 @@ public class ApiTest extends BaseTest {
         String link = "https://www.nutanix.com/bin/get/userinfo.json";
         RequestDto requestDto = new RequestDto();
         requestDto.setResourceLink(link);
-        UserDTO responseDto = (UserDTO) ApiClient.GET.apply(requestDto);
+        UserDTO responseDto = (UserDTO) ApiClient.GET_USER_INFO.apply(requestDto);
         Assertions.assertThat(responseDto.getUserId().toLowerCase().equals("anonymous")).isTrue();
     }
 }
