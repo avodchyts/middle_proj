@@ -40,7 +40,7 @@ public abstract class BaseTest {
         DecoratorPipeline<WebDriver> decorators = new DecoratorPipeline<>(windowMaximizer)
                 .addDecorator(new EventFiringDecorator<>(new WebDriverLogger())::decorate)
                 .addDecorator(new ScreenshotTakerDecorator()::decorate)
-                .addDecorator(new DeviceEmulationDecorator(DeviceFactory.selectDeviceByName(PROD_DATA.deviceName()))::decorate);
+                .addDecorator(new DeviceEmulationDecorator(DeviceFactory.selectDeviceByName(PROD_DATA.deviceName())));
         WebDriver driverFactory = SingletonWebDriver.INSTANCE;
         driverSupplier = new DriverManager(driverFactory, decorators);
     }
