@@ -7,7 +7,7 @@ import org.apache.log4j.Logger;
 
 import java.util.function.Function;
 
-public enum ApiClient implements Function<RequestDto, IResponseDto> {
+public enum RestAssureApiClient implements IApiClient<RequestDto, IResponseDto> {
     GET(
             requestDto -> RestAssured.with().get(requestDto.getResourceLink()),
             response -> {
@@ -31,17 +31,18 @@ public enum ApiClient implements Function<RequestDto, IResponseDto> {
                 if (response.statusCode() / 100 == 4) {
                     throw new IllegalArgumentException((String) response.htmlPath().get("html.body"));
                 }
-                return ModelFactory.selectResponseDtoType(response, "User_Dto").get();
+                //return ModelFactory.selectResponseDtoType(response, "User_Dto").get();
+                return response.as(ModelFactory.selectResponseDtoType(response, "User_Dto").get().getClass());
             });
     private final Function<RequestDto, Response> requester;
     private final Function<Response, IResponseDto> responseProcessor;
 
-    ApiClient(Function<RequestDto, Response> requester, Function<Response, IResponseDto> responseProcessor) {
+    RestAssureApiClient(Function<RequestDto, Response> requester, Function<Response, IResponseDto> responseProcessor) {
         this.requester = requester;
         this.responseProcessor = responseProcessor;
     }
 
-    private static final Logger LOGGER = Logger.getLogger(ApiClient.class);
+    private static final Logger LOGGER = Logger.getLogger(RestAssureApiClient.class);
 
     @Override
     public IResponseDto apply(RequestDto request) throws ApiClientError {

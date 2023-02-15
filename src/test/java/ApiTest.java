@@ -1,4 +1,4 @@
-import api.ApiClient;
+import api.RestAssureApiClient;
 import api.models.ParamResponseDto;
 import api.models.RequestDto;
 import api.models.ResponseDto;
@@ -14,7 +14,7 @@ public class ApiTest extends BaseTest {
         RequestDto requestDto = new RequestDto();
         requestDto.setId("notAllowedspList");
         requestDto.setResourceLink(link);
-        ParamResponseDto paramResponseDto = (ParamResponseDto) ApiClient.GET_PARAM.apply(requestDto);
+        ParamResponseDto paramResponseDto = (ParamResponseDto) RestAssureApiClient.GET_PARAM.apply(requestDto);
         Assertions.assertThat(paramResponseDto.getData().contains("sizer-prod")).isTrue();
     }
 
@@ -24,7 +24,7 @@ public class ApiTest extends BaseTest {
         String link = "https://www.nutanix.com/libs/granite/csrf/token.json";
         RequestDto requestDto = new RequestDto();
         requestDto.setResourceLink(link);
-        ResponseDto responseDto = (ResponseDto) ApiClient.GET.apply(requestDto);
+        ResponseDto responseDto = (ResponseDto) RestAssureApiClient.GET.apply(requestDto);
         Assertions.assertThat(responseDto.getStatusCode() == 200).isTrue();
         Assertions.assertThat(responseDto.getStatusMessage().toLowerCase().contains("success")).isTrue();
     }
@@ -35,7 +35,7 @@ public class ApiTest extends BaseTest {
         String link = "https://www.nutanix.com/bin/get/userinfo.json";
         RequestDto requestDto = new RequestDto();
         requestDto.setResourceLink(link);
-        UserDTO responseDto = (UserDTO) ApiClient.GET_USER_INFO.apply(requestDto);
+        UserDTO responseDto = (UserDTO) RestAssureApiClient.GET_USER_INFO.apply(requestDto);
         Assertions.assertThat(responseDto.getUserId().toLowerCase().equals("anonymous")).isTrue();
     }
 }
