@@ -1,13 +1,10 @@
 import data.ExtendLanguageUrlDto;
 import data.LanguageUrlDataProvider;
 import data.LanguageUrlDto;
-import fixtures.LangValue;
-import fixtures.UrlTemplate;
 import io.restassured.response.ValidatableResponse;
 import org.apache.log4j.Logger;
 import org.assertj.core.api.SoftAssertions;
 import org.testng.annotations.Test;
-
 import ui.pages.NavigationUtilityHeader;
 
 import java.util.regex.Matcher;

@@ -41,6 +41,7 @@ public class TestListener implements ITestListener {
         saveFailureScreenShot(SingletonWebDriver.INSTANCE);
 
     }
+
     @Attachment
     public byte[] saveFailureScreenShot(WebDriver driver) {
         return ((TakesScreenshot)driver).getScreenshotAs(OutputType.BYTES);

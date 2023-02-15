@@ -1,22 +1,18 @@
+import api.RestAssuredApiClient;
+import api.models.RequestDto;
+import api.models.ResponseDto;
 import data.LanguageUrlDataProvider;
 import data.LanguageUrlDto;
 import io.qameta.allure.*;
-import io.restassured.response.ValidatableResponse;
 import org.apache.log4j.Logger;
 import org.assertj.core.api.Assertions;
 import org.assertj.core.api.SoftAssertions;
 import org.testng.annotations.Test;
-import support.ApiClient;
-import support.RequestDto;
-import support.ResponseDto;
 import ui.pages.LanguageChooser;
 
 import java.util.List;
-import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
-import static io.restassured.RestAssured.given;
 
 @Epic("Testing Allure library")
 @Feature("Verify FEATURE Operations Allure library")
@@ -92,10 +88,16 @@ public class LanguageChooserTest extends BaseTest {
     private void linkAPIChecks(SoftAssertions softAssert, String link) {
         LOGGER.info(String.format("API checking link: %s", link));
         Pattern patternApi = Pattern.compile("4\\d{2}");
-        RequestDto requestDto = new RequestDto();
-        requestDto.setResourceLink(link);
-        ResponseDto actualResponseDto = ApiClient.GET.apply(requestDto);
+
+        RequestDto requestDto = RequestDto.builder()
+                .resourceLink(link)
+                .build();
+
+        ResponseDto actualResponseDto = RestAssuredApiClient.GET
+                .apply(requestDto);
+
         Matcher matcherApi = patternApi.matcher(String.valueOf(actualResponseDto.getStatusCode()));
+
         softAssert.assertThat(matcherApi.find()).isFalse();
     }
 
