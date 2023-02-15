@@ -42,26 +42,6 @@ public enum HttpApiClient implements IApiClient<RequestDto, IResponseDto>{
 
             }
     );
-
-//    GET_USER_INFO(
-//            requestDto -> HttpClient.newHttpClient().send((HttpRequest.newBuilder().uri(new URI(requestDto.getResourceLink())), HttpResponse.BodyHandlers.ofString()).GET()),
-//    response -> {
-//        if (response.statusCode() / 100 == 4) {
-//            throw new IllegalArgumentException((String) response.htmlPath().get("html.body"));
-//        }
-//        return response.as(ModelFactory.selectResponseDtoType(response, "Response_Dto").get().getClass());
-//    }),
-//
-//    GET_PARAM(
-//            requestDto ->HttpClient.newHttpClient().send((HttpRequest.newBuilder().uri(new URI(requestDto.getResourceLink())).header("id",requestDto.getId())).GET()),
-//    response ->
-//
-//    {
-//        if (response.statusCode() / 100 == 4) {
-//            throw new IllegalArgumentException((String) response.htmlPath().get("html.body"));
-//        }
-//        return response.as(ModelFactory.selectResponseDtoType(response, "User_Dto").get().getClass());
-//    });
     private final Function<RequestDto, Response> requester;
     private final Function<Response, IResponseDto> responseProcessor;
 
