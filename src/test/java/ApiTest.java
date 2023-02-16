@@ -15,14 +15,9 @@ public class ApiTest {
 
     @Test
     public void testLoginAPI() {
-        String link = "https://my.nutanix.com/api/v1/appconfigs";
-        RequestDto requestDto = RequestDto.builder()
-                .resourceLink(link)
-                .queryParams(Collections.singletonMap("id", "notAllowedspList"))
-                .build();
 
-        ResponseDto responseDto = RestAssuredApiClient.GET
-                .apply(requestDto);
+        ResponseDto responseDto = new AppConfigsService()
+                .getResponseAppConfigs("notAllowedspList");
 
         Assertions
                 .assertThat(responseDto.getStatusCode())
@@ -35,8 +30,8 @@ public class ApiTest {
 
     @Test
     public void testBodyLoginAPI() {
-        String link = "https://my.nutanix.com/api/v1/appconfigs";
-        AppConfigsResponse[] responseBody = new AppConfigsService(link).getAppConfigs("notAllowedspList");
+        AppConfigsResponse[] responseBody = new AppConfigsService()
+                .getAppConfigs("notAllowedspList");
         Assertions
                 .assertThat(responseBody)
                 .hasSize(1);
