@@ -3,7 +3,9 @@ import api.models.RequestDto;
 import api.models.ResponseDto;
 import models.AppConfigsResponse;
 import models.UserInfo;
+import models.service.AppConfigsService;
 import models.service.EntityService;
+import models.service.UserService;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 
@@ -22,13 +24,19 @@ public class ApiTest {
         ResponseDto responseDto = RestAssuredApiClient.GET
                 .apply(requestDto);
 
-        AppConfigsResponse[] responseBody = new EntityService<AppConfigsResponse>(responseDto)
-                .getArrayInfo();
-
         Assertions
                 .assertThat(responseDto.getStatusCode())
                 .isEqualTo(200);
+        Assertions.assertThat(responseDto.getStatusMessage()
+                        .toLowerCase()
+                        .contains("success"))
+                .isTrue();
+    }
 
+    @Test
+    public void testBodyLoginAPI() {
+        String link = "https://my.nutanix.com/api/v1/appconfigs";
+        AppConfigsResponse[] responseBody = new AppConfigsService(link).getAppConfigs("notAllowedspList");
         Assertions
                 .assertThat(responseBody)
                 .hasSize(1);
@@ -68,15 +76,8 @@ public class ApiTest {
                 .userId("anonymous")
                 .build();
 
-        RequestDto requestDto = RequestDto.builder()
-                .resourceLink(link)
-                .build();
-
-        ResponseDto responseDto = RestAssuredApiClient.GET
-                .apply(requestDto);
-
-        UserInfo userInfo = new EntityService<UserInfo>(responseDto)
-                .getSinglInfo();
+        UserInfo userInfo = new UserService(link)
+                .getUserInfo();
         Assertions
                 .assertThat(userInfo).isEqualTo(expectedUser);
     }
