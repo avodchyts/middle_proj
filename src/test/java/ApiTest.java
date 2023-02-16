@@ -3,6 +3,7 @@ import api.models.RequestDto;
 import api.models.ResponseDto;
 import models.AppConfigsResponse;
 import models.UserInfo;
+import models.service.EntityService;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 
@@ -21,9 +22,8 @@ public class ApiTest {
         ResponseDto responseDto = RestAssuredApiClient.GET
                 .apply(requestDto);
 
-        AppConfigsResponse[] responseBody = responseDto
-                .getBody()
-                .as(AppConfigsResponse[].class);
+        AppConfigsResponse[] responseBody = new EntityService<AppConfigsResponse>(responseDto)
+                .getArrayInfo();
 
         Assertions
                 .assertThat(responseDto.getStatusCode())
@@ -75,8 +75,8 @@ public class ApiTest {
         ResponseDto responseDto = RestAssuredApiClient.GET
                 .apply(requestDto);
 
-        UserInfo userInfo = responseDto.getBody().as(UserInfo.class);
-
+        UserInfo userInfo = new EntityService<UserInfo>(responseDto)
+                .getSinglInfo();
         Assertions
                 .assertThat(userInfo).isEqualTo(expectedUser);
     }
