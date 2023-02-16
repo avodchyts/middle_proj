@@ -3,17 +3,15 @@ package models.service;
 import api.RestAssuredApiClient;
 import api.models.RequestDto;
 import api.models.ResponseDto;
-import fixtures.UserEndPoints;
+import fixtures.UserEndPoint;
 import models.UserInfo;
 
 public class UserService {
-    public UserService() {
-    }
 
     public UserInfo getUserInfo() {
         RequestDto requestDto = RequestDto
                 .builder()
-                .resourceLink(UserEndPoints.GET_ENDPOINT.endPoint)
+                .resourceLink(UserEndPoint.BASE_URI.concat(UserEndPoint.READ_ENDPOINT.endPoint))
                 .build();
         ResponseDto responseDto = RestAssuredApiClient.GET
                 .apply(requestDto);
@@ -25,9 +23,9 @@ public class UserService {
     public UserInfo createUser(UserInfo userInfo) {
         RequestDto requestDto = RequestDto
                 .builder()
-                .resourceLink(UserEndPoints.POST_ENDPOINT.endPoint)
+                .resourceLink(UserEndPoint.CREATE_ENDPOINT.endPoint)
                 .build();
-        ResponseDto responseDto = RestAssuredApiClient.POST
+        ResponseDto responseDto = RestAssuredApiClient.GET
                 .apply(requestDto);
         return responseDto
                 .getBody()
@@ -37,9 +35,9 @@ public class UserService {
     public UserInfo updateUser(String userId, UserInfo user) {
         RequestDto requestDto = RequestDto
                 .builder()
-                .resourceLink(UserEndPoints.PUT_ENDPOINT.endPoint)
+                .resourceLink(UserEndPoint.UPDATE_ENDPOINT.endPoint)
                 .build();
-        ResponseDto responseDto = RestAssuredApiClient.PUT
+        ResponseDto responseDto = RestAssuredApiClient.GET
                 .apply(requestDto);
         return responseDto
                 .getBody()
