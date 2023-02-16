@@ -11,7 +11,9 @@ public class EntityService<T> {
     }
 
     public T getSinglInfo() {
-        return (T) responseDto.getBody().as(entity.getClass());
+        return (T) responseDto
+                .getBody()
+                .as(entity.getClass());
     }
 
     public T[] getArrayInfo() {
