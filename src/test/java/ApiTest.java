@@ -71,12 +71,11 @@ public class ApiTest {
 
     @Test
     public void testApiUserInfo() {
-        String link = "https://www.nutanix.com/bin/get/userinfo.json";
-        UserInfo expectedUser = UserInfo.builder()
+                UserInfo expectedUser = UserInfo.builder()
                 .userId("anonymous")
                 .build();
 
-        UserInfo userInfo = new UserService(link)
+        UserInfo userInfo = new UserService()
                 .getUserInfo();
         Assertions
                 .assertThat(userInfo).isEqualTo(expectedUser);

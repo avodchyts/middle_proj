@@ -3,19 +3,17 @@ package models.service;
 import api.RestAssuredApiClient;
 import api.models.RequestDto;
 import api.models.ResponseDto;
+import fixtures.UserEndPoints;
 import models.UserInfo;
 
 public class UserService {
-    public String link;
-
-    public UserService(String link) {
-        this.link = link;
+    public UserService() {
     }
 
     public UserInfo getUserInfo() {
         RequestDto requestDto = RequestDto
                 .builder()
-                .resourceLink(link)
+                .resourceLink(UserEndPoints.GET_ENDPOINT.endPoint)
                 .build();
         ResponseDto responseDto = RestAssuredApiClient.GET
                 .apply(requestDto);

@@ -21,5 +21,5 @@ public class EntityService<T> {
                 .getBody()
                 .as(entity.getClass());
     }
-    
+
 }
