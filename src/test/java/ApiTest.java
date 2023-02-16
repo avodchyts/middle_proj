@@ -3,6 +3,9 @@ import api.models.RequestDto;
 import api.models.ResponseDto;
 import models.AppConfigsResponse;
 import models.UserInfo;
+import models.service.AppConfigsService;
+import models.service.EntityService;
+import models.service.UserService;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 
@@ -12,23 +15,23 @@ public class ApiTest {
 
     @Test
     public void testLoginAPI() {
-        String link = "https://my.nutanix.com/api/v1/appconfigs";
-        RequestDto requestDto = RequestDto.builder()
-                .resourceLink(link)
-                .queryParams(Collections.singletonMap("id", "notAllowedspList"))
-                .build();
 
-        ResponseDto responseDto = RestAssuredApiClient.GET
-                .apply(requestDto);
-
-        AppConfigsResponse[] responseBody = responseDto
-                .getBody()
-                .as(AppConfigsResponse[].class);
+        ResponseDto responseDto = new AppConfigsService()
+                .getResponseAppConfigs("notAllowedspList");
 
         Assertions
                 .assertThat(responseDto.getStatusCode())
                 .isEqualTo(200);
+        Assertions.assertThat(responseDto.getStatusMessage()
+                        .toLowerCase()
+                        .contains("success"))
+                .isTrue();
+    }
 
+    @Test
+    public void testBodyLoginAPI() {
+        AppConfigsResponse[] responseBody = new AppConfigsService()
+                .getAppConfigs("notAllowedspList");
         Assertions
                 .assertThat(responseBody)
                 .hasSize(1);
@@ -63,20 +66,12 @@ public class ApiTest {
 
     @Test
     public void testApiUserInfo() {
-        String link = "https://www.nutanix.com/bin/get/userinfo.json";
         UserInfo expectedUser = UserInfo.builder()
                 .userId("anonymous")
                 .build();
 
-        RequestDto requestDto = RequestDto.builder()
-                .resourceLink(link)
-                .build();
-
-        ResponseDto responseDto = RestAssuredApiClient.GET
-                .apply(requestDto);
-
-        UserInfo userInfo = responseDto.getBody().as(UserInfo.class);
-
+        UserInfo userInfo = new UserService()
+                .getUserInfo();
         Assertions
                 .assertThat(userInfo).isEqualTo(expectedUser);
     }
