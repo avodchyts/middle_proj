@@ -21,7 +21,6 @@ public interface TestConfig extends Config {
     String environmentName();
     @Key("mobileDevice")
     String deviceName();
-
     @Key("token")
     String authorizationToken();
 }
