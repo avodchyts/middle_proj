@@ -5,7 +5,10 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.support.events.EventFiringDecorator;
 import org.testng.annotations.AfterMethod;
 import org.testng.annotations.BeforeMethod;
-import utils.*;
+import support.DecoratorPipeline;
+import support.DeviceFactory;
+import ui.support.*;
+import support.Decorator;
 
 import java.util.function.Supplier;
 
@@ -37,8 +40,8 @@ public abstract class BaseTest {
         DecoratorPipeline<WebDriver> decorators = new DecoratorPipeline<>(windowMaximizer)
                 .addDecorator(new EventFiringDecorator<>(new WebDriverLogger())::decorate)
                 .addDecorator(new ScreenshotTakerDecorator()::decorate)
-                .addDecorator(new DeviceEmulationDecorator(DeviceFactory.selectDeviceByName(PROD_DATA.deviceName()))::decorate);
-        Supplier<WebDriver> driverFactory = DriverFactory.selectDriverSupplier(PROD_DATA.browserName());
+                .addDecorator(new DeviceEmulationDecorator(DeviceFactory.selectDeviceByName(PROD_DATA.deviceName())));
+        WebDriver driverFactory = SingletonWebDriver.INSTANCE;
         driverSupplier = new DriverManager(driverFactory, decorators);
     }
 

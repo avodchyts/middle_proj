@@ -1,8 +1,8 @@
 package data;
 
+import fixtures.LangValue;
+import fixtures.UrlTemplate;
 import org.testng.annotations.DataProvider;
-import utils.LangValue;
-import utils.UrlTemplate;
 
 import java.util.Arrays;
 import java.util.Iterator;
