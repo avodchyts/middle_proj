@@ -12,6 +12,7 @@ import java.util.Map;
 public class RequestDto {
     private String contentType;
     private String resourceLink;
+    private Map<String, Object> header;
     private Map<String, Object> queryParams;
     private Map<String, String> pathParams;
     private Object body;

@@ -32,6 +32,25 @@ public enum RestAssuredApiClient implements Function<RequestDto, ResponseDto> {
                         .body(response.body())
                         .build();
             }),
+    POST(requestDto -> {
+        RequestSpecification requestSpecification = getRequestSpecification(requestDto);
+
+        return requestSpecification.post(requestDto.getResourceLink());
+    },
+    response -> {
+        if (response.statusCode() / 100 != 2) {
+            String errorMessage = getErrorMessage(response);
+
+            throw new RestAssuredApiClientError(errorMessage, response);
+        }
+
+        return ResponseDto.builder()
+                .statusMessage(response.getStatusLine())
+                .statusCode(response.statusCode())
+                .contentType(response.contentType())
+                .body(response.body())
+                .build();
+    })
     ;
 
     private final Function<RequestDto, Response> requester;
@@ -75,6 +94,10 @@ public enum RestAssuredApiClient implements Function<RequestDto, ResponseDto> {
 
     private static RequestSpecification getRequestSpecification(RequestDto requestDto) {
         RequestSpecification requestSpecification = RestAssured.with();
+
+        if (Objects.nonNull(requestDto.getHeader())) {
+            requestSpecification.headers(requestDto.getHeader());
+        }
 
         if (Objects.nonNull(requestDto.getContentType())) {
             requestSpecification.contentType(requestDto.getContentType());

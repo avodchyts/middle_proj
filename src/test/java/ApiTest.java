@@ -48,7 +48,7 @@ public class ApiTest {
     @Test
     public void testApiUserInfo() {
         UserInfo expectedUser = UserInfo.builder()
-                .userId("anonymous")
+                .id("anonymous")
                 .build();
 
         UserInfo userInfo = new UserService()
