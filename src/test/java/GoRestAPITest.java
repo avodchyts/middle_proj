@@ -12,22 +12,12 @@ import java.util.Objects;
 public class GoRestAPITest {
 
     @Test
-    public void testUser() {
-        String userId = "";
-        UserInfo user = new UserService().getUserGoRestAPI(userId);
-        Assertions
-                .assertThat(user.getId().equals(userId)).isTrue();
-        Assertions.assertThat(Objects.nonNull(user)).isTrue();
-    }
-
-    @Test
     public void testUsersList() {
         List<UserInfo> userList = Arrays.asList(new UserService().getUsersInfo());
 
         Assertions
                 .assertThat(userList.size() > 0).isTrue();
     }
-
     @Test
     public void testCreateUser() {
         UserInfo user = UserInfo.builder()
@@ -40,6 +30,15 @@ public class GoRestAPITest {
         UserInfo expectedUser = new UserService().createUser(user);
         Assertions
                 .assertThat(expectedUser.equals(user)).isTrue();
+    }
+
+    @Test
+    public void testUser() {
+        String userId = "4";
+        UserInfo user = new UserService().getUserGoRestAPI(userId);
+        Assertions
+                .assertThat(user.getId().equals(userId)).isTrue();
+        Assertions.assertThat(Objects.nonNull(user)).isTrue();
     }
 
     @Test
