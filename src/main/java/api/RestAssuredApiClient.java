@@ -37,20 +37,59 @@ public enum RestAssuredApiClient implements Function<RequestDto, ResponseDto> {
 
         return requestSpecification.post(requestDto.getResourceLink());
     },
-    response -> {
-        if (response.statusCode() / 100 != 2) {
-            String errorMessage = getErrorMessage(response);
+            response -> {
+                if (response.statusCode() / 100 != 2) {
+                    String errorMessage = getErrorMessage(response);
 
-            throw new RestAssuredApiClientError(errorMessage, response);
-        }
+                    throw new RestAssuredApiClientError(errorMessage, response);
+                }
 
-        return ResponseDto.builder()
-                .statusMessage(response.getStatusLine())
-                .statusCode(response.statusCode())
-                .contentType(response.contentType())
-                .body(response.body())
-                .build();
-    })
+                return ResponseDto.builder()
+                        .statusMessage(response.getStatusLine())
+                        .statusCode(response.statusCode())
+                        .contentType(response.contentType())
+                        .body(response.body())
+                        .build();
+            }),
+    PUT(requestDto -> {
+        RequestSpecification requestSpecification = getRequestSpecification(requestDto);
+
+        return requestSpecification.put(requestDto.getResourceLink());
+    },
+            response -> {
+                if (response.statusCode() / 100 != 2) {
+                    String errorMessage = getErrorMessage(response);
+
+                    throw new RestAssuredApiClientError(errorMessage, response);
+                }
+
+                return ResponseDto.builder()
+                        .statusMessage(response.getStatusLine())
+                        .statusCode(response.statusCode())
+                        .contentType(response.contentType())
+                        .body(response.body())
+                        .build();
+            }),
+    DELETE(
+            requestDto -> {
+                RequestSpecification requestSpecification = getRequestSpecification(requestDto);
+
+                return requestSpecification.delete(requestDto.getResourceLink());
+            },
+            response -> {
+                if (response.statusCode() / 100 != 2) {
+                    String errorMessage = getErrorMessage(response);
+
+                    throw new RestAssuredApiClientError(errorMessage, response);
+                }
+
+                return ResponseDto.builder()
+                        .statusMessage(response.getStatusLine())
+                        .statusCode(response.statusCode())
+                        .contentType(response.contentType())
+                        .body(response.body())
+                        .build();
+            }),
     ;
 
     private final Function<RequestDto, Response> requester;

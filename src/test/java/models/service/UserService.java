@@ -71,7 +71,7 @@ public class UserService {
                 .body(userInfo)
                 .resourceLink(GoRestEndpoint.UPDATE_ENDPOINT.endPoint)
                 .build();
-        ResponseDto responseDto = RestAssuredApiClient.POST
+        ResponseDto responseDto = RestAssuredApiClient.PUT
                 .apply(requestDto);
         return responseDto
                 .getBody()
@@ -85,7 +85,7 @@ public class UserService {
                 .body(userInfo)
                 .resourceLink(GoRestEndpoint.DELETE_ENDPOINT.endPoint)
                 .build();
-        ResponseDto responseDto = RestAssuredApiClient.POST
+        ResponseDto responseDto = RestAssuredApiClient.DELETE
                 .apply(requestDto);
         return responseDto;
     }
