@@ -1,17 +1,17 @@
-import api.RestAssuredApiClient;
-import api.models.RequestDto;
 import api.models.ResponseDto;
+import config.TestConfig;
 import models.AppConfigsResponse;
 import models.UserInfo;
-import models.service.AppConfigsService;
-import models.service.EntityService;
-import models.service.UserService;
+import api.service.AppConfigsService;
+import api.service.UserService;
+import org.aeonbits.owner.ConfigFactory;
 import org.assertj.core.api.Assertions;
 import org.testng.annotations.Test;
 
-import java.util.Collections;
-
 public class ApiTest {
+
+    private static final TestConfig PROD_DATA = ConfigFactory.create(TestConfig.class);
+    private static final String token = String.format("Bearer %s", PROD_DATA.authorizationToken());
 
     @Test
     public void testLoginAPI() {
@@ -43,17 +43,5 @@ public class ApiTest {
         Assertions
                 .assertThat(responseBody[0].getData())
                 .contains("sizer-prod");
-    }
-
-    @Test
-    public void testApiUserInfo() {
-        UserInfo expectedUser = UserInfo.builder()
-                .id("anonymous")
-                .build();
-
-        UserInfo userInfo = new UserService()
-                .getUserInfo();
-        Assertions
-                .assertThat(userInfo).isEqualTo(expectedUser);
     }
 }

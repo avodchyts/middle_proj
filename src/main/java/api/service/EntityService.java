@@ -1,4 +1,4 @@
-package models.service;
+package api.service;
 
 import api.models.ResponseDto;
 

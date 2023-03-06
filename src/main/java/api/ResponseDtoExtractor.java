@@ -3,14 +3,15 @@ package api;
 import api.models.ResponseDto;
 import io.restassured.response.Response;
 
-public class ResponseClient {
+import java.util.function.Function;
 
-    private ResponseClient() {}
+public class ResponseDtoExtractor implements Function<Response, ResponseDto> {
 
-    public static ResponseDto getResponseDTO(Response response, String errorMessage) {
+    public ResponseDto apply(Response response) {
         if (response.statusCode() / 100 != 2) {
-            throw new RestAssuredApiClientError(errorMessage, response);
+            new ErrorResponseHandler().accept(response);
         }
+
         return ResponseDto.builder()
                 .statusMessage(response.getStatusLine())
                 .statusCode(response.statusCode())
