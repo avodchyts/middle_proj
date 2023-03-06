@@ -18,28 +18,28 @@ public enum RestAssuredApiClient implements Function<RequestDto, ResponseDto> {
 
                 return requestSpecification.get(requestDto.getResourceLink());
             },
-            response -> ResponseClient.getResponseDTO(getErrorMessage(response))),
+            response -> ResponseClient.getResponseDTO(response,getErrorMessage(response))),
     POST(
             requestDto -> {
                 RequestSpecification requestSpecification = getRequestSpecification(requestDto);
 
                 return requestSpecification.post(requestDto.getResourceLink());
             },
-            response -> ResponseClient.getResponseDTO(getErrorMessage(response))),
+            response -> ResponseClient.getResponseDTO(response,getErrorMessage(response))),
     PUT(
             requestDto -> {
                 RequestSpecification requestSpecification = getRequestSpecification(requestDto);
 
                 return requestSpecification.put(requestDto.getResourceLink());
             },
-            response -> ResponseClient.getResponseDTO(getErrorMessage(response))),
+            response -> ResponseClient.getResponseDTO(response,getErrorMessage(response))),
     DELETE(
             requestDto -> {
                 RequestSpecification requestSpecification = getRequestSpecification(requestDto);
 
                 return requestSpecification.delete(requestDto.getResourceLink());
             },
-            response -> ResponseClient.getResponseDTO(getErrorMessage(response))),
+            response -> ResponseClient.getResponseDTO(response,getErrorMessage(response))),
     ;
 
     private final Function<RequestDto, Response> requester;

@@ -4,13 +4,11 @@ import api.models.ResponseDto;
 import io.restassured.response.Response;
 
 public class ResponseClient {
-    public static Response response;
 
-    private ResponseClient(Response response) {
-        this.response = response;
+    private ResponseClient() {
     }
 
-    public static ResponseDto getResponseDTO(String errorMessage) {
+    public static ResponseDto getResponseDTO(Response response, String errorMessage) {
         if (response.statusCode() / 100 != 2) {
             throw new RestAssuredApiClientError(errorMessage, response);
         }
