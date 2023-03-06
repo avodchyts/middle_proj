@@ -5,8 +5,7 @@ import io.restassured.response.Response;
 
 public class ResponseClient {
 
-    private ResponseClient() {
-    }
+    private ResponseClient() {}
 
     public static ResponseDto getResponseDTO(Response response, String errorMessage) {
         if (response.statusCode() / 100 != 2) {
