@@ -1,68 +1,108 @@
-import api.models.ResponseDto;
+import api.service.UserService;
+import config.TestConfig;
 import models.UserInfo;
-import models.service.AppConfigsService;
-import models.service.UserService;
+import org.aeonbits.owner.ConfigFactory;
 import org.assertj.core.api.Assertions;
-import org.testng.annotations.Test;
+import org.testng.annotations.*;
 
 import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 public class GoRestAPITest {
 
-    @Test
-    public void testUsersList() {
-        List<UserInfo> userList = Arrays.asList(new UserService().getUsersInfo());
+    private static final TestConfig PROD_DATA = ConfigFactory.create(TestConfig.class);
+    private static final String token = String.format("Bearer %s", PROD_DATA.authorizationToken());
+    private final ThreadLocal<UserInfo> createUserTemplate = new ThreadLocal<>();
+    private final ThreadLocal<UserInfo> testUser = new ThreadLocal<>();
 
-        Assertions
-                .assertThat(userList.size() > 0).isTrue();
+    @BeforeMethod
+    public void preCondition() {
+        UUID uniqueId = UUID.randomUUID();
+        createUserTemplate.set(
+                UserInfo.builder()
+                        .name("TestUser")
+                        .email(String.format("foo_bar_%s@email.test", uniqueId))
+                        .gender("male")
+                        .status("active")
+                        .build());
+        testUser.set(new UserService(token).createUser(createUserTemplate.get()));
     }
+
+    @Test
+    public void testReadUsersList() {
+        List<UserInfo> userList = Arrays.asList(new UserService(token).getUsersInfo());
+        Assertions.assertThat(userList).isNotEmpty();
+        Assertions
+                .assertThat(userList)
+                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
+                .contains(createUserTemplate.get());
+    }
+
     @Test
     public void testCreateUser() {
-        UserInfo user = UserInfo.builder()
-                .id("4")
-                .name("TestUser")
-                .email("kaniyar_swami_ret@wehner-krajcik.info")
-                .gender("male")
-                .status("active")
-                .build();
-        UserInfo expectedUser = new UserService().createUser(user);
         Assertions
-                .assertThat(expectedUser.equals(user)).isTrue();
+                .assertThat(testUser.get())
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(createUserTemplate.get());
     }
 
     @Test
-    public void testUser() {
-        String userId = "4";
-        UserInfo user = new UserService().getUserGoRestAPI(userId);
+    public void testReadUser() {
+        String userId = testUser.get().getId();
+        UserInfo readUser = new UserService(token).getUserInfo(userId);
         Assertions
-                .assertThat(user.getId().equals(userId)).isTrue();
-        Assertions.assertThat(Objects.nonNull(user)).isTrue();
+                .assertThat(readUser.getId())
+                .isEqualTo(userId);
+        Assertions
+                .assertThat(readUser)
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(createUserTemplate.get());
+        testUser.remove();
     }
 
     @Test
     public void testUpdateUser() {
-        UserInfo user = UserInfo.builder()
+        UUID uniqueId = UUID.randomUUID();
+        String userId = testUser.get().getId();
+        UserInfo updateUserData = UserInfo.builder()
                 .name("TestUser_updated")
-                .email("kaniyar_swami_ret@wehner-krajcik.update")
+                .email(String.format("foo_bar_%s@email.test", uniqueId))
                 .gender("female")
                 .status("active")
                 .build();
-        UserInfo expectedUser = new UserService().updateUser("4", user);
+        UserInfo updatedUser = new UserService(token).updateUser(userId, updateUserData);
         Assertions
-                .assertThat(expectedUser.equals(user)).isFalse();
+                .assertThat(updatedUser.getId())
+                .isEqualTo(userId);
+        Assertions
+                .assertThat(updatedUser)
+                .usingRecursiveComparison()
+                .ignoringFields("id")
+                .isEqualTo(updateUserData);
+        testUser.set(updatedUser);
     }
 
     @Test
     public void testDeleteUser() {
-        UserInfo user = UserInfo.builder()
-                .id("4")
-                .build();
-        ResponseDto expectedResponse = new UserService().deleteUser(user);
+        new UserService(token).deleteUser(testUser.get().getId());
+        List<UserInfo> userList = Arrays.asList(new UserService(token).getUsersInfo());
+        Assertions.assertThat(userList).isNotEmpty();
         Assertions
-                .assertThat(expectedResponse.getStatusCode() == 200);
-        Assertions.assertThat(expectedResponse.getStatusMessage().contains("success")).isTrue();
+                .assertThat(userList)
+                .usingRecursiveFieldByFieldElementComparatorIgnoringFields("id")
+                .doesNotContain(testUser.get());
+        testUser.remove();
     }
 
+    @AfterMethod
+    public void postCondition() {
+        if (Objects.nonNull(testUser.get())) {
+            new UserService(token).deleteUser(testUser.get().getId());
+            testUser.remove();
+        }
+    }
 }

@@ -1,16 +1,21 @@
 package fixtures;
 
 public enum GoRestEndpoint {
-    READ_ENDPOINT("/public/v2/users"),
-    CREATE_ENDPOINT("/public/v2/users"),
-    UPDATE_ENDPOINT("/public/v2/users"),
-    DELETE_ENDPOINT("/public/v2/users");
+    READ_USERS("/public/v2/users"),
+    READ_USER("/public/v2/users/{id}"),
+    CREATE_USERS("/public/v2/users"),
+    UPDATE_USERS("/public/v2/users/{id}"),
+    DELETE_USERS("/public/v2/users/{id}");
 
-    public static final String BASE_URI = "https://gorest.co.in";
-    public final String endPoint;
+    private static final String BASE_URI = "https://gorest.co.in";
+    private final String endPoint;
 
     GoRestEndpoint(String endPoint) {
         this.endPoint = endPoint;
+    }
+
+    public String getEndPoint() {
+        return String.format("%s%s", BASE_URI, endPoint);
     }
 }
 

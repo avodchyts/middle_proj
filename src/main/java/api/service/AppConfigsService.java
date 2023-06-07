@@ -1,4 +1,4 @@
-package models.service;
+package api.service;
 
 import api.RestAssuredApiClient;
 import api.models.RequestDto;
@@ -16,9 +16,8 @@ public class AppConfigsService {
                 .resourceLink(AppconfigEndPoint.BASE_URL.concat(AppconfigEndPoint.READ.endPoint))
                 .queryParams(Collections.singletonMap("id", paramValue))
                 .build();
-        ResponseDto responseDto = RestAssuredApiClient.GET.
+        return RestAssuredApiClient.GET.
                 apply(requestDto);
-        return responseDto;
     }
 
     public AppConfigsResponse[] getAppConfigs(String paramValue) {
