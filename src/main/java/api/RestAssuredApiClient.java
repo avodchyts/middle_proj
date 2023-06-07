@@ -18,20 +18,28 @@ public enum RestAssuredApiClient implements Function<RequestDto, ResponseDto> {
 
                 return requestSpecification.get(requestDto.getResourceLink());
             },
-            response -> {
-                if (response.statusCode() / 100 != 2) {
-                    String errorMessage = getErrorMessage(response);
+            response -> ResponseClient.getResponseDTO(response,getErrorMessage(response))),
+    POST(
+            requestDto -> {
+                RequestSpecification requestSpecification = getRequestSpecification(requestDto);
 
-                    throw new RestAssuredApiClientError(errorMessage, response);
-                }
+                return requestSpecification.post(requestDto.getResourceLink());
+            },
+            response -> ResponseClient.getResponseDTO(response,getErrorMessage(response))),
+    PUT(
+            requestDto -> {
+                RequestSpecification requestSpecification = getRequestSpecification(requestDto);
 
-                return ResponseDto.builder()
-                        .statusMessage(response.getStatusLine())
-                        .statusCode(response.statusCode())
-                        .contentType(response.contentType())
-                        .body(response.body())
-                        .build();
-            }),
+                return requestSpecification.put(requestDto.getResourceLink());
+            },
+            response -> ResponseClient.getResponseDTO(response,getErrorMessage(response))),
+    DELETE(
+            requestDto -> {
+                RequestSpecification requestSpecification = getRequestSpecification(requestDto);
+
+                return requestSpecification.delete(requestDto.getResourceLink());
+            },
+            response -> ResponseClient.getResponseDTO(response,getErrorMessage(response))),
     ;
 
     private final Function<RequestDto, Response> requester;
@@ -48,11 +56,9 @@ public enum RestAssuredApiClient implements Function<RequestDto, ResponseDto> {
     public ResponseDto apply(RequestDto request) throws RestAssuredApiClientError {
         try {
             Response response = requester.apply(request);
-
             return responseProcessor.apply(response);
         } catch (RestAssuredApiClientError restAssuredApiClientError) {
             LOGGER.error(restAssuredApiClientError.getMessage());
-
             throw restAssuredApiClientError;
         }
     }
@@ -75,6 +81,10 @@ public enum RestAssuredApiClient implements Function<RequestDto, ResponseDto> {
 
     private static RequestSpecification getRequestSpecification(RequestDto requestDto) {
         RequestSpecification requestSpecification = RestAssured.with();
+
+        if (Objects.nonNull(requestDto.getHeader())) {
+            requestSpecification.headers(requestDto.getHeader());
+        }
 
         if (Objects.nonNull(requestDto.getContentType())) {
             requestSpecification.contentType(requestDto.getContentType());

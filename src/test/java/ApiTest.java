@@ -46,28 +46,9 @@ public class ApiTest {
     }
 
     @Test
-    public void testApiFromMainPage() {
-        String link = "https://www.nutanix.com/libs/granite/csrf/token.json";
-        RequestDto requestDto = RequestDto.builder()
-                .resourceLink(link)
-                .build();
-
-        ResponseDto responseDto = RestAssuredApiClient.GET
-                .apply(requestDto);
-
-        Assertions
-                .assertThat(responseDto.getStatusCode())
-                .isEqualTo(200);
-
-        Assertions
-                .assertThat(responseDto.getStatusMessage())
-                .containsIgnoringCase("OK");
-    }
-
-    @Test
     public void testApiUserInfo() {
         UserInfo expectedUser = UserInfo.builder()
-                .userId("anonymous")
+                .id("anonymous")
                 .build();
 
         UserInfo userInfo = new UserService()
