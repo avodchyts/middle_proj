@@ -1,0 +1,163 @@
+https://java-design-patterns.com/patterns/singleton/
+https://java-design-patterns.com/patterns/factory/
+https://java-design-patterns.com/patterns/decorator/#explanation
+https://www.baeldung.com/java-8-functional-interfaces
+https://www.baeldung.com/java-dependency-inversion-principle
+https://java-design-patterns.com/patterns/pipeline/
+http://owner.aeonbits.org/docs/loading-strategies/
+
+[1/12 4:36 PM] Bagrat Ioannisiani
+
+@Sources("classpath:env.${env.name}.properties")
+
+[1/12 4:37 PM] Bagrat Ioannisiani
+
+проперть можно передать так: mvn test -Denv.name=prod
+
+[1/12 4:38 PM] Bagrat Ioannisiani
+
+или отредактировать run configuration в IDEA и там прописать
+
+[1/12 4:40 PM] Bagrat Ioannisiani
+
+classpath это все что у тебя при запуске тестов копируется в target, в частности папки main/resources и test/resources
+
+[1/12 4:40 PM] Bagrat Ioannisiani
+
+проперти файлы я бы складывал в main/resources
+
+###############################################
+https://www.linkedin.com/learning/advanced-selenium-support-classes/what-is-eventfiringwebdriver
+EventFiringWebDriver (selenium.dev)
+WebDriverDecorator (selenium.dev)
+EventFiringDecorator (selenium.dev)
+
+[1/13 12:14 PM] Bagrat Ioannisiani
+
+Aliaksandr Vodchyts
+
+хотел спросить один вопрос, про который всегда забываю:   когда ты спрашиваешь о принципах ООП, ожидаешь ли ты услышать о ассоциации, агрегации и композиции
+
+да, от чела выше чем джуниор в принципе ожидаю, не обязательно названий но хотя бы понимания
+
+[1/13 12:19 PM] Bagrat Ioannisiani
+
+но вообще это сугубая теория, в жизни есть Strategy pattern и SOLID принципы, если человек может привести пример типа такого то этого достаточно
+https://betterprogramming.pub/inheritance-vs-composition-2fa0cdd2f939
+
+https://www.baeldung.com/java-generics
+
+1) обнови локальный мастер у себя
+
+git checkout master
+
+git fetch -p
+
+git pull
+
+2) сделай в том бранче git rebase из мастера а то у тебя в нем все те изменения которые ты уже смержил идет как новые
+
+https://www.baeldung.com/jackson-map
+https://www.google.com/search?q=executeCdpCommand+interface
+
+https://martinfowler.com/bliki/PageObject.html
+
+предлагаю немного зарефаторить структуру проекта
+
+в main сделать
+
++ main
+
+- java
+
+-- ui
+
+--- pages
+
+--- support (тут только то что относится к Selenium)
+
+-- fixtures (тут LangValue, UrlTemplate)
+
+-- support (тут остальные utils)
+
+-- config
+
+######
+[2/1 1:12 PM] Bagrat Ioannisiani
+
+классы RequestDto и ResponseDto тебе надо будет самому сделать с помощью Lombok
+
+@Data (projectlombok.org)
+
+@Builder (projectlombok.org)
+
+ like 1
+
+@Data
+
+[2/1 1:20 PM] Bagrat Ioannisiani
+
+2. Добавь генерацию репертов при помощи Allure
+
+Allure Framework (qameta.io)
+
+для api тестов добавляй в репорт логи запросов и ответов
+
+Integration of Allure Report with Rest Assured and TestNG – QA Automation Expert
+
+для ui тестов добавляй скриншоты
+
+Allure Report using Annotations | Selenium Easy
+
+ like 1
+
+Allure Framework
+[2/1 1:24 PM] Bagrat Ioannisiani
+
+3. добавь вывод логов на консоль если при запуске тестов указан параметр -Dverbose=true (он будет виден как System.getProperty("verbose"))
+
+[2/1 1:25 PM] Bagrat Ioannisiani
+
+4. добавь аналогично параметр logLevel чтобы можно было указывать -DlogLevel=error или -DlogLevel=info
+
+
+https://java-design-patterns.com/patterns/delegation/
+https://projectlombok.org/features/experimental/Delegate
+
+[2/7 2:13 PM] Bagrat Ioannisiani
+
+там надо было добавить еще один энтити в enum
+
+типа GET
+
+[2/7 2:17 PM] Bagrat Ioannisiani
+
+в конструкторе передать requester и responseProcessor
+
+вот это надо в requester:
+
+request -> given().contentType("application/json").when().get(request.getResourceLink()).then();
+
+[2/7 2:18 PM] Bagrat Ioannisiani
+
+для contentType используй константы типа
+
+https://docs.oracle.com/javaee/7/api/javax/ws/rs/core/MediaType.html
+
+MediaType (Java(TM) EE 7 Specification APIs)
+
+https://www.linkedin.com/posts/rsinghal26_softwaredeveloper-memes-juniordeveloper-ugcPost-7028594594883805184-ZO8d?utm_source=share&utm_medium=member_ios
+
+[2/20 5:03 PM] Bagrat Ioannisiani
+
+Aliaksandr Vodchyts
+
+і более конкретные вопросы: селениум: что ты ожидаешь услышать от кондидата на уровень мидл, соответвующий вопрос по апи.  Паттерны: достаточно ли будет перечислить паттерны, которые мы использовали в кодрефакторинге и описание принципов solid ?
+
+от мидла ожидается максимум знание базовых паттернов на уровне видел применял потому что посоветовали. проектировать что-то используя паттерны это уровень сеньора
+
+[2/20 5:07 PM] Bagrat Ioannisiani
+
+селениум и rest assured или другие инструменты - знание интерфейсов и методов инструмента, способность объяснить что делают, решить какой-то пример с их использованием. например, прочитать данные из таблицы на странице которая показывает праздники для текущего месяца (число, название праздника) и сравнить с коллекцией которую возвращает запрос /api/holidays/ в виде [{ "date": string, "name": string }]
+
+
